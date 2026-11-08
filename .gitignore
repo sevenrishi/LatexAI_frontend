@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment and Local Secrets
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+*.pem
+*.key
+*.cert
+
+# Production & Build Output
+dist/
+dist-ssr/
+build/
+*.tsbuildinfo
+
+# Vite & Linter Caches
+.vite/
+.eslintcache
+.oxlintcache
+
+# Playwright & End-to-End Testing
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Unit Test & Coverage
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
