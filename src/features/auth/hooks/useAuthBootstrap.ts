@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/store/authStore'
 import { authApi, DEMO_SESSION, DEMO_USER, DEMO_PROFILE } from '../api/authApi'
-import { ApiError } from '@/lib/api'
 
 export function useAuthBootstrap() {
   const { setSession, setProfile, clearAuth, setIsLoading } = useAuthStore()

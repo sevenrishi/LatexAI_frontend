@@ -28,7 +28,14 @@ export function CertificationsSection({ profile }: CertificationsSectionProps) {
   const [editingItem, setEditingItem] = useState<CertificationItem | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
 
-  const items = profile.certifications || []
+  const rawItems = profile.certifications || []
+  const seenCertKeys = new Set<string>()
+  const items = rawItems.filter((item) => {
+    const key = `${(item.name || '').trim().toLowerCase()}::${(item.issuer || '').trim().toLowerCase()}`
+    if (seenCertKeys.has(key)) return false
+    seenCertKeys.add(key)
+    return true
+  })
 
   const handleOpenAdd = () => {
     setEditingItem(null)

@@ -453,6 +453,84 @@ export function ResumeImportModal({
                           className="h-7 text-xs"
                         />
                       </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">Email</Label>
+                        <Input
+                          value={editableParsed.contact.email || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, email: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">Phone</Label>
+                        <Input
+                          value={editableParsed.contact.phone || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, phone: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">Location</Label>
+                        <Input
+                          value={editableParsed.contact.location || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, location: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">Website / Portfolio</Label>
+                        <Input
+                          value={editableParsed.contact.website || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, website: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">LinkedIn</Label>
+                        <Input
+                          value={editableParsed.contact.linkedin || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, linkedin: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[10px] text-muted-foreground">GitHub</Label>
+                        <Input
+                          value={editableParsed.contact.github || ''}
+                          onChange={(e) =>
+                            setEditableParsed((prev) => ({
+                              ...prev,
+                              contact: { ...prev.contact!, github: e.target.value },
+                            }))
+                          }
+                          className="h-7 text-xs"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

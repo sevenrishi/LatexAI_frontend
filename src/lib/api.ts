@@ -110,7 +110,25 @@ export async function request<T>(
       headers: reqHeaders,
     })
   } catch (err) {
-    throw new ApiError(0, 'NETWORK_ERROR', (err as Error).message || 'Network connection failed')
+    if (
+      !isRetry &&
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
+      !url.includes('localhost:4000') &&
+      !url.includes('127.0.0.1:4000')
+    ) {
+      try {
+        const localUrl = `http://localhost:4000/api/v1/${cleanEndpoint}`
+        res = await fetch(localUrl, {
+          ...rest,
+          headers: reqHeaders,
+        })
+      } catch {
+        throw new ApiError(0, 'NETWORK_ERROR', (err as Error).message || 'Network connection failed')
+      }
+    } else {
+      throw new ApiError(0, 'NETWORK_ERROR', (err as Error).message || 'Network connection failed')
+    }
   }
 
   // 401 Interceptor: Refresh token & retry once (skip for auth endpoints to prevent loops)

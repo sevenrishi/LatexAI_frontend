@@ -27,7 +27,14 @@ export function SkillsSection({ profile }: SkillsSectionProps) {
   const [targetCategoryForBulk, setTargetCategoryForBulk] = useState('Languages')
   const [newSkillInput, setNewSkillInput] = useState<Record<string, string>>({})
 
-  const allSkills = profile.skills || []
+  const rawSkills = profile.skills || []
+  const seenSkillNames = new Set<string>()
+  const allSkills = rawSkills.filter((s) => {
+    const key = (s.name || '').trim().toLowerCase()
+    if (seenSkillNames.has(key)) return false
+    seenSkillNames.add(key)
+    return true
+  })
 
   // Ensure all existing categories in profile are represented plus defaults
   const categories = Array.from(

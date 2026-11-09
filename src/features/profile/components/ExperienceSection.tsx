@@ -34,7 +34,14 @@ export function ExperienceSection({ profile }: ExperienceSectionProps) {
   const [editingItem, setEditingItem] = useState<ExperienceItem | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
 
-  const items = profile.experience || []
+  const rawItems = profile.experience || []
+  const seenExpKeys = new Set<string>()
+  const items = rawItems.filter((item) => {
+    const key = `${(item.company || '').trim().toLowerCase()}::${(item.title || '').trim().toLowerCase()}`
+    if (seenExpKeys.has(key)) return false
+    seenExpKeys.add(key)
+    return true
+  })
 
   const handleOpenAdd = () => {
     setEditingItem(null)

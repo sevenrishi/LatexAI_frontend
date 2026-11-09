@@ -507,6 +507,7 @@ export function useResumeImport() {
     }) => profileApi.confirmResumeImport(importId, payload),
     onSuccess: (updated) => {
       queryClient.setQueryData(profileKeys.detail(), updated)
+      queryClient.invalidateQueries({ queryKey: profileKeys.detail() })
       toast.success('Resume imported and profile updated successfully!')
     },
     onError: (err) => {

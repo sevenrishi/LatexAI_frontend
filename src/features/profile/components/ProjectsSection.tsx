@@ -20,7 +20,14 @@ export function ProjectsSection({ profile }: ProjectsSectionProps) {
   const [editingItem, setEditingItem] = useState<ProjectItem | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
 
-  const items = profile.projects || []
+  const rawItems = profile.projects || []
+  const seenProjKeys = new Set<string>()
+  const items = rawItems.filter((item) => {
+    const key = (item.title || '').trim().toLowerCase()
+    if (seenProjKeys.has(key)) return false
+    seenProjKeys.add(key)
+    return true
+  })
 
   const handleOpenAdd = () => {
     setEditingItem(null)

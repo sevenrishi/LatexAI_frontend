@@ -37,7 +37,14 @@ export function EducationSection({ profile }: EducationSectionProps) {
   const [editingItem, setEditingItem] = useState<EducationItem | null>(null)
   const [itemToDelete, setItemToDelete] = useState<string | null>(null)
 
-  const items = profile.education || []
+  const rawItems = profile.education || []
+  const seenEduKeys = new Set<string>()
+  const items = rawItems.filter((item) => {
+    const key = `${(item.institution || '').trim().toLowerCase()}::${(item.degree || '').trim().toLowerCase()}`
+    if (seenEduKeys.has(key)) return false
+    seenEduKeys.add(key)
+    return true
+  })
 
   const handleOpenAdd = () => {
     setEditingItem(null)
