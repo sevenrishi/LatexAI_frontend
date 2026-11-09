@@ -58,6 +58,55 @@ export const DEMO_PROFILE: UserProfile = {
 
 export const authApi = {
   async getMe(): Promise<UserProfile> {
+    // 1. If Supabase session is active, prioritize real user data
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const user = session.user
+
+        // Try remote API first
+        try {
+          const remote = await api.get<UserProfile>('/auth/me')
+          if (remote?.id && remote.fullName !== 'Alex Rivera' && remote.fullName !== 'Alex Morgan') {
+            return remote
+          }
+        } catch {
+          // Fallback to Supabase direct DB query
+        }
+
+        const { data: dbProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .maybeSingle()
+
+        const meta = user.user_metadata || {}
+        let resolvedName =
+          dbProfile?.full_name ||
+          (meta.full_name as string) ||
+          (meta.fullName as string) ||
+          (meta.name as string) ||
+          (user.email ? user.email.split('@')[0] : '') ||
+          ''
+
+        if (resolvedName === 'Alex Rivera' || resolvedName === 'Alex Morgan') {
+          resolvedName = (meta.full_name as string) || (meta.name as string) || (user.email ? user.email.split('@')[0] : '') || ''
+        }
+
+        return {
+          id: user.id,
+          email: dbProfile?.email || user.email || '',
+          fullName: resolvedName,
+          headline: dbProfile?.headline || (meta.headline as string) || '',
+          onboardingCompleted: Boolean(dbProfile?.onboarding_completed ?? meta.onboarding_completed),
+          activeTemplateId: dbProfile?.active_template_id || (meta.active_template_id as string) || 'tpl_default_swe',
+          createdAt: dbProfile?.created_at || user.created_at,
+        }
+      }
+    } catch {
+      // Continue to demo fallback if unauthenticated
+    }
+
     const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
     const stored = localStorage.getItem('latexai_demo_profile')
     if (isDemo && stored) {
@@ -131,8 +180,27 @@ export const authApi = {
 
   async updateProfile(payload: { fullName?: string; headline?: string }): Promise<UserProfile> {
     try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const updateData: Record<string, unknown> = {
+          updated_at: new Date().toISOString(),
+        }
+        if (payload.fullName !== undefined) updateData.full_name = payload.fullName
+        if (payload.headline !== undefined) updateData.headline = payload.headline
+
+        await supabase.from('profiles').update(updateData).eq('id', session.user.id)
+      }
+    } catch {
+      // Direct update best-effort
+    }
+
+    try {
       return await api.patch<UserProfile>('/auth/me', payload)
     } catch (err) {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        return this.getMe()
+      }
       const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
       if (isDemo) {
         const stored = localStorage.getItem('latexai_demo_profile')

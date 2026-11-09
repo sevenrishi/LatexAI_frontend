@@ -55,14 +55,33 @@ export function AppLayout() {
     navigate('/login')
   }
 
-  const userDisplayName =
-    profile?.fullName || user?.user_metadata?.full_name || user?.email || 'User'
-  const userInitials = userDisplayName
+  const resolveLayoutName = () => {
+    const candidates = [
+      profile?.fullName,
+      user?.user_metadata?.full_name,
+      user?.user_metadata?.fullName,
+      user?.user_metadata?.name,
+      user?.email ? user.email.split('@')[0] : null,
+    ]
+    for (const name of candidates) {
+      if (typeof name === 'string' && name.trim()) {
+        const clean = name.trim()
+        if (clean !== 'Alex Rivera' && clean !== 'Alex Morgan') {
+          return clean
+        }
+      }
+    }
+    return user?.email || 'User'
+  }
+
+  const userDisplayName = resolveLayoutName()
+  const userInitials = (userDisplayName || 'U')
     .split(' ')
+    .filter(Boolean)
     .map((n: string) => n[0])
     .join('')
     .substring(0, 2)
-    .toUpperCase()
+    .toUpperCase() || 'U'
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">

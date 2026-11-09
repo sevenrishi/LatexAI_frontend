@@ -56,7 +56,7 @@ export function JobPasteTab({
             <Input
               value={companyName}
               onChange={(e) => onChangeCompanyName(e.target.value)}
-              placeholder="Anthropic"
+              placeholder="Stripe, Anthropic, or OpenAI"
               className="pl-9 h-9 text-xs sm:text-sm"
             />
           </div>

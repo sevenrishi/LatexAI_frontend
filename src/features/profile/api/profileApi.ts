@@ -1,10 +1,16 @@
 import { api } from '@/lib/api'
+import { supabase } from '@/lib/supabase'
 import type {
   FullProfile,
   UpdateProfilePayload,
   ResumeImportDraft,
   ResumeImportConfirmPayload,
   ProfileCompleteness,
+  ExperienceItem,
+  EducationItem,
+  SkillItem,
+  CertificationItem,
+  ProjectItem,
 } from '@/types/profile'
 
 export function calculateCompleteness(profile: Partial<FullProfile>): ProfileCompleteness {
@@ -153,6 +159,42 @@ export const INITIAL_DEMO_FULL_PROFILE: FullProfile = {
   ],
 }
 
+const sectionTableMap: Record<string, string> = {
+  experience: 'profile_experience',
+  education: 'profile_education',
+  skills: 'profile_skills',
+  certifications: 'profile_certifications',
+  projects: 'profile_projects',
+}
+
+const clientToDbMap: Record<string, string> = {
+  startDate: 'start_date',
+  endDate: 'end_date',
+  fieldOfStudy: 'field_of_study',
+  sortOrder: 'sort_order',
+  issueDate: 'issue_date',
+  expiryDate: 'expiry_date',
+  doesNotExpire: 'does_not_expire',
+  credentialId: 'credential_id',
+  credentialUrl: 'credential_url',
+  techStack: 'tech_stack',
+  repoUrl: 'repo_url',
+  liveUrl: 'live_url',
+  fullName: 'full_name',
+}
+
+function toDbFields(item: Record<string, unknown>): Record<string, unknown> {
+  const res: Record<string, unknown> = {}
+  for (const [k, v] of Object.entries(item)) {
+    if (k === 'id' && typeof v === 'string' && (v.startsWith('sk_') || v.startsWith('exp_') || v.startsWith('edu_') || v.startsWith('cert_') || v.startsWith('proj_') || v.startsWith('item_') || v.startsWith('link_'))) {
+      continue
+    }
+    const dbKey = clientToDbMap[k] || k
+    res[dbKey] = v
+  }
+  return res
+}
+
 function getLocalDemoProfile(): FullProfile {
   const stored = localStorage.getItem('latexai_demo_profile_full')
   if (stored) {
@@ -171,6 +213,151 @@ function saveLocalDemoProfile(profile: FullProfile): void {
 
 export const profileApi = {
   async getProfile(): Promise<FullProfile> {
+    // 1. If real Supabase session is active, read directly from Supabase DB
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const user = session.user
+
+        // Direct DB read:
+        const { data: rootProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .maybeSingle()
+
+        const [expRes, eduRes, sklRes, certRes, projRes] = await Promise.all([
+          supabase
+            .from('profile_experience')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('sort_order', { ascending: true }),
+          supabase
+            .from('profile_education')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('sort_order', { ascending: true }),
+          supabase
+            .from('profile_skills')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('sort_order', { ascending: true }),
+          supabase
+            .from('profile_certifications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('sort_order', { ascending: true }),
+          supabase
+            .from('profile_projects')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('sort_order', { ascending: true }),
+        ])
+
+        const meta = user.user_metadata || {}
+        let resolvedName =
+          rootProfile?.full_name ||
+          (meta.full_name as string) ||
+          (meta.fullName as string) ||
+          (meta.name as string) ||
+          (user.email ? user.email.split('@')[0] : '') ||
+          ''
+
+        if (resolvedName === 'Alex Rivera' || resolvedName === 'Alex Morgan') {
+          resolvedName =
+            (meta.full_name as string) ||
+            (meta.fullName as string) ||
+            (meta.name as string) ||
+            (user.email ? user.email.split('@')[0] : '') ||
+            ''
+        }
+
+        const experience: ExperienceItem[] = (expRes.data || []).map((e: any) => ({
+          id: e.id,
+          company: e.company || '',
+          title: e.title || '',
+          location: e.location || '',
+          startDate: e.start_date || '',
+          endDate: e.end_date || null,
+          current: Boolean(e.current),
+          bullets: Array.isArray(e.bullets) ? e.bullets : [],
+          sortOrder: e.sort_order ?? 0,
+        }))
+
+        const education: EducationItem[] = (eduRes.data || []).map((e: any) => ({
+          id: e.id,
+          institution: e.institution || '',
+          degree: e.degree || '',
+          fieldOfStudy: e.field_of_study || '',
+          location: e.location || '',
+          startDate: e.start_date || '',
+          endDate: e.end_date || '',
+          current: Boolean(e.current),
+          gpa: e.gpa || '',
+          honors: e.honors || '',
+          sortOrder: e.sort_order ?? 0,
+        }))
+
+        const skills: SkillItem[] = (sklRes.data || []).map((s: any) => ({
+          id: s.id,
+          name: s.name || '',
+          category: s.category || 'Other',
+          sortOrder: s.sort_order ?? 0,
+        }))
+
+        const certifications: CertificationItem[] = (certRes.data || []).map((c: any) => ({
+          id: c.id,
+          name: c.name || '',
+          issuer: c.issuer || '',
+          issueDate: c.issue_date || '',
+          expiryDate: c.expiry_date || null,
+          doesNotExpire: Boolean(c.does_not_expire),
+          credentialId: c.credential_id || '',
+          credentialUrl: c.credential_url || '',
+          sortOrder: c.sort_order ?? 0,
+        }))
+
+        const projects: ProjectItem[] = (projRes.data || []).map((p: any) => ({
+          id: p.id,
+          title: p.title || '',
+          role: p.role || '',
+          description: p.description || '',
+          techStack: Array.isArray(p.tech_stack) ? p.tech_stack : [],
+          liveUrl: p.live_url || '',
+          repoUrl: p.repo_url || '',
+          sortOrder: p.sort_order ?? 0,
+        }))
+
+        const profileData: FullProfile = {
+          id: user.id,
+          email: rootProfile?.email || user.email || '',
+          fullName: resolvedName,
+          headline: rootProfile?.headline || '',
+          phone: rootProfile?.phone || '',
+          location: rootProfile?.location || '',
+          summary: rootProfile?.summary || '',
+          website: rootProfile?.website || '',
+          github: rootProfile?.github || '',
+          linkedin: rootProfile?.linkedin || '',
+          customLinks: Array.isArray(rootProfile?.links) ? rootProfile.links : [],
+          experience,
+          education,
+          skills,
+          certifications,
+          projects,
+          onboardingCompleted: Boolean(rootProfile?.onboarding_completed),
+          updatedAt: rootProfile?.updated_at || new Date().toISOString(),
+          completeness: { percentage: 0, tier: 'needs_work', sections: {} as any, missingSections: [] },
+        }
+
+        profileData.completeness = calculateCompleteness(profileData)
+        return profileData
+      }
+    } catch (directErr) {
+      console.warn('Direct Supabase getProfile encountered an issue:', directErr)
+    }
+
+    // 2. Demo fallback if unauthenticated
     const isDemo = typeof window !== 'undefined' && Boolean(localStorage.getItem('latexai_demo_token'))
     try {
       const data = await api.get<FullProfile>('/profile')
@@ -193,27 +380,35 @@ export const profileApi = {
   },
 
   async updateProfile(payload: UpdateProfilePayload): Promise<FullProfile> {
-    const isDemo = typeof window !== 'undefined' && Boolean(localStorage.getItem('latexai_demo_token'))
     try {
-      const data = await api.patch<FullProfile>('/profile', payload)
-      return {
-        ...data,
-        completeness: calculateCompleteness(data),
-      }
-    } catch (err) {
-      if (isDemo) {
-        const current = getLocalDemoProfile()
-        const updated: FullProfile = {
-          ...current,
-          ...payload,
-          updatedAt: new Date().toISOString(),
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const updateObj: Record<string, unknown> = {
+          updated_at: new Date().toISOString(),
         }
-        updated.completeness = calculateCompleteness(updated)
-        saveLocalDemoProfile(updated)
-        return updated
+        if (payload.fullName !== undefined) updateObj.full_name = payload.fullName
+        if (payload.headline !== undefined) updateObj.headline = payload.headline
+        if (payload.phone !== undefined) updateObj.phone = payload.phone
+        if (payload.location !== undefined) updateObj.location = payload.location
+        if (payload.summary !== undefined) updateObj.summary = payload.summary
+        if (payload.website !== undefined) updateObj.website = payload.website
+        if (payload.github !== undefined) updateObj.github = payload.github
+        if (payload.linkedin !== undefined) updateObj.linkedin = payload.linkedin
+        if (payload.customLinks !== undefined) updateObj.links = payload.customLinks
+
+        await supabase.from('profiles').update(updateObj).eq('id', session.user.id)
       }
-      throw err
+    } catch (e) {
+      console.warn('Direct profile update warning:', e)
     }
+
+    try {
+      await api.patch<FullProfile>('/profile', payload)
+    } catch {
+      // API call best-effort
+    }
+
+    return this.getProfile()
   },
 
   async updateFullProfile(payload: UpdateProfilePayload): Promise<FullProfile> {
@@ -221,38 +416,120 @@ export const profileApi = {
   },
 
   async reorderSection(section: string, itemIds: string[]): Promise<FullProfile> {
+    const tableName = sectionTableMap[section]
     try {
-      return await api.patch<FullProfile>(`/profile/${section}/reorder`, {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user && tableName) {
+        await Promise.all(
+          itemIds.map((id, index) =>
+            supabase
+              .from(tableName)
+              .update({ sort_order: index })
+              .eq('id', id)
+              .eq('user_id', session.user.id)
+          )
+        )
+      }
+    } catch (e) {
+      console.warn(`Direct DB reorder for ${section} warning:`, e)
+    }
+
+    try {
+      await api.patch<FullProfile>(`/profile/${section}/reorder`, {
         orderedIds: itemIds,
         order: itemIds,
       })
     } catch {
-      const current = getLocalDemoProfile()
-      if (section === 'skills') {
-        const map = new Map(current.skills.map((s) => [s.id, s]))
-        current.skills = itemIds.map((id) => map.get(id)!).filter(Boolean)
-      } else if (section === 'experience') {
-        const map = new Map(current.experience.map((e) => [e.id, e]))
-        current.experience = itemIds.map((id) => map.get(id)!).filter(Boolean)
-      }
-      saveLocalDemoProfile(current)
-      return current
+      // Fallback
     }
+    return this.getProfile()
   },
 
   async createSectionItem<T = unknown>(section: string, item: unknown): Promise<T> {
+    const tableName = sectionTableMap[section]
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user && tableName) {
+        const dbPayload = toDbFields(item as Record<string, unknown>)
+        dbPayload.user_id = session.user.id
+        const { data, error } = await supabase
+          .from(tableName)
+          .insert(dbPayload)
+          .select()
+          .single()
+        if (!error && data) {
+          return data as T
+        }
+      }
+    } catch (e) {
+      console.warn(`Direct DB insert for ${section} warning:`, e)
+    }
     return await api.post<T>(`/profile/${section}`, item)
   },
 
   async updateSectionItem<T = unknown>(section: string, id: string, item: unknown): Promise<T> {
+    const tableName = sectionTableMap[section]
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user && tableName) {
+        const dbPayload = toDbFields(item as Record<string, unknown>)
+        delete dbPayload.id
+        delete dbPayload.user_id
+        const { data, error } = await supabase
+          .from(tableName)
+          .update(dbPayload)
+          .eq('id', id)
+          .eq('user_id', session.user.id)
+          .select()
+          .single()
+        if (!error && data) {
+          return data as T
+        }
+      }
+    } catch (e) {
+      console.warn(`Direct DB update for ${section} warning:`, e)
+    }
     return await api.put<T>(`/profile/${section}/${id}`, item)
   },
 
   async deleteSectionItem(section: string, id: string): Promise<{ deleted: boolean; id: string }> {
+    const tableName = sectionTableMap[section]
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user && tableName) {
+        await supabase
+          .from(tableName)
+          .delete()
+          .eq('id', id)
+          .eq('user_id', session.user.id)
+        return { deleted: true, id }
+      }
+    } catch (e) {
+      console.warn(`Direct DB delete for ${section} warning:`, e)
+    }
     return await api.delete<{ deleted: boolean; id: string }>(`/profile/${section}/${id}`)
   },
 
   async bulkAddSkills(skills: Array<{ name: string; category?: string } | string>): Promise<unknown[]> {
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        const normalized = skills
+          .map((s) => {
+            if (typeof s === 'string') return { user_id: session.user.id, name: s.trim(), category: 'Other' }
+            return { user_id: session.user.id, name: s.name.trim(), category: s.category || 'Other' }
+          })
+          .filter((s) => Boolean(s.name))
+
+        const { data } = await supabase
+          .from('profile_skills')
+          .upsert(normalized, { onConflict: 'user_id,name' })
+          .select()
+        if (data) return data
+      }
+    } catch (e) {
+      console.warn('Direct DB bulkAddSkills warning:', e)
+    }
     return await api.post<unknown[]>('/profile/skills/bulk', { skills })
   },
 

@@ -134,7 +134,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 id="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Alex Morgan"
+                placeholder="e.g. John Doe"
               />
             </FormField>
 
@@ -143,7 +143,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 id="headline"
                 value={headline}
                 onChange={(e) => setHeadline(e.target.value)}
-                placeholder="Senior Full Stack & Distributed Systems Engineer"
+                placeholder="e.g. Senior Full Stack Engineer"
               />
             </FormField>
 
@@ -153,7 +153,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="alex.morgan@example.com"
+                placeholder="e.g. user@example.com"
               />
             </FormField>
 
@@ -162,7 +162,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 id="phone"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+1 (555) 019-2834"
+                placeholder="e.g. +1 (555) 000-0000"
               />
             </FormField>
 
@@ -171,7 +171,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="San Francisco, CA"
+                placeholder="e.g. San Francisco, CA"
               />
             </FormField>
 
@@ -186,7 +186,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                   id="website"
                   value={website}
                   onChange={(e) => setWebsite(e.target.value)}
-                  placeholder="https://alexmorgan.dev"
+                  placeholder="https://yourportfolio.com"
                   className="pl-9"
                 />
               </div>
@@ -199,7 +199,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                   id="github"
                   value={github}
                   onChange={(e) => setGithub(e.target.value)}
-                  placeholder="https://github.com/alexmorgan"
+                  placeholder="https://github.com/username"
                   className="pl-9"
                 />
               </div>
@@ -212,7 +212,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                   id="linkedin"
                   value={linkedin}
                   onChange={(e) => setLinkedin(e.target.value)}
-                  placeholder="https://linkedin.com/in/alexmorgan"
+                  placeholder="https://linkedin.com/in/username"
                   className="pl-9"
                 />
               </div>

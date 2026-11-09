@@ -64,7 +64,6 @@ export function LoginPage() {
           if (backendAuth?.session && backendAuth?.user) {
             session = backendAuth.session
             user = backendAuth.user
-            localStorage.setItem('latexai_demo_token', backendAuth.session.access_token)
           }
         } catch (apiErr) {
           setErrorMessage((apiErr as Error).message || 'Invalid email or password.')

@@ -11,18 +11,27 @@ import { toast } from 'sonner'
 
 export function AccountDetailsSection() {
   const profile = useAuthStore((s) => s.profile)
+  const user = useAuthStore((s) => s.user)
   const setProfile = useAuthStore((s) => s.setProfile)
 
-  const [fullName, setFullName] = useState(profile?.fullName || '')
+  const [fullName, setFullName] = useState(
+    profile?.fullName && profile.fullName !== 'Alex Rivera' && profile.fullName !== 'Alex Morgan'
+      ? profile.fullName
+      : user?.user_metadata?.full_name || ''
+  )
   const [headline, setHeadline] = useState(profile?.headline || '')
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
     if (profile) {
-      setFullName(profile.fullName || '')
+      const cleanName =
+        profile.fullName && profile.fullName !== 'Alex Rivera' && profile.fullName !== 'Alex Morgan'
+          ? profile.fullName
+          : user?.user_metadata?.full_name || ''
+      setFullName(cleanName)
       setHeadline(profile.headline || '')
     }
-  }, [profile])
+  }, [profile, user])
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -82,7 +91,7 @@ export function AccountDetailsSection() {
             </div>
             <p className="text-xs text-muted-foreground flex items-center gap-1.5 truncate">
               <Mail className="h-3.5 w-3.5" />
-              <span>{profile?.email || 'demo@latexai.dev'}</span>
+              <span>{profile?.email || user?.email || ''}</span>
             </p>
           </div>
         </div>
@@ -94,7 +103,7 @@ export function AccountDetailsSection() {
               id="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="e.g. Alex Rivera"
+              placeholder="e.g. John Doe"
               className="text-xs h-9"
               data-testid="input-full-name"
             />
@@ -118,7 +127,7 @@ export function AccountDetailsSection() {
           <FormField label="Account Email Address" id="email" description="Email addresses are managed through your auth provider">
             <Input
               id="email"
-              value={profile?.email || 'demo@latexai.dev'}
+              value={profile?.email || user?.email || ''}
               disabled
               className="text-xs h-9 bg-muted/50 cursor-not-allowed opacity-80"
               data-testid="input-email-disabled"

@@ -114,7 +114,6 @@ export function RegisterPage() {
           if (res?.session && res?.user) {
             registeredSession = res.session
             registeredUser = res.user
-            localStorage.setItem('latexai_demo_token', res.session.access_token)
           }
         } catch (apiErr) {
           setErrorMessage((apiErr as Error).message || 'Failed to create account.')
@@ -252,7 +251,7 @@ export function RegisterPage() {
           <FormField label="Full Name" id="name" required>
             <Input
               id="name"
-              placeholder="Alex Rivera"
+              placeholder="e.g. John Doe"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               disabled={isLoading}

@@ -54,12 +54,25 @@ export function DashboardPage() {
     return 'Good evening'
   }, [])
 
-  const displayName =
-    profile?.fullName ||
-    fullProfile?.fullName ||
-    user?.user_metadata?.full_name ||
-    user?.email?.split('@')[0] ||
-    'Engineer'
+  const displayName = useMemo(() => {
+    const candidates = [
+      profile?.fullName,
+      fullProfile?.fullName,
+      user?.user_metadata?.full_name,
+      user?.user_metadata?.fullName,
+      user?.user_metadata?.name,
+      user?.email ? user.email.split('@')[0] : null,
+    ]
+    for (const name of candidates) {
+      if (typeof name === 'string' && name.trim()) {
+        const clean = name.trim()
+        if (clean !== 'Alex Rivera' && clean !== 'Alex Morgan') {
+          return clean
+        }
+      }
+    }
+    return 'User'
+  }, [profile?.fullName, fullProfile?.fullName, user?.user_metadata, user?.email])
 
   const completenessPercentage =
     fullProfile?.completeness?.percentage ?? (profile as unknown as { completeness?: { percentage?: number } })?.completeness?.percentage ?? 0
