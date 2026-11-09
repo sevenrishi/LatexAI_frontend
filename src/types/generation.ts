@@ -157,7 +157,8 @@ export interface TailoredContent {
 }
 
 export interface ResumeDownloadResponse {
-  url: string
+  url?: string
+  downloadUrl?: string
   fileName: string
   format: 'pdf' | 'tex'
   expiresAt: string
@@ -177,6 +178,7 @@ export interface GenerationDetail {
   changes?: ChangesData
   tailoredContent?: TailoredContent
   compiledPdfUrl?: string
+  pdfUrl?: string
   latexSource?: string
   pdfUrlExpiresAt?: string
   isOutOfDate?: boolean

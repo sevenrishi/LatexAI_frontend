@@ -71,13 +71,14 @@ export function ReviewPage() {
   // Handle PDF download (FE-5.06)
   const handleDownloadPdf = async () => {
     if (!id || !generation) return
+    const gen = generation as any
     try {
       await downloadResumeFile({
         generationId: id,
         format: 'pdf',
-        jobTitle: generation.jobTitle,
-        companyName: generation.companyName,
-        fallbackPdfUrl: generation.compiledPdfUrl,
+        jobTitle: gen.jobTitle || gen.job_title,
+        companyName: gen.companyName || gen.company_name,
+        fallbackPdfUrl: gen.compiledPdfUrl || gen.pdfUrl,
       })
     } catch {
       // toast is handled in downloadResumeFile
@@ -87,13 +88,14 @@ export function ReviewPage() {
   // Handle LaTeX .tex source download (FE-5.06)
   const handleDownloadTex = async () => {
     if (!id || !generation) return
+    const gen = generation as any
     try {
       await downloadResumeFile({
         generationId: id,
         format: 'tex',
-        jobTitle: generation.jobTitle,
-        companyName: generation.companyName,
-        fallbackLatexSource: generation.latexSource,
+        jobTitle: gen.jobTitle || gen.job_title,
+        companyName: gen.companyName || gen.company_name,
+        fallbackLatexSource: gen.latexSource || gen.latex_code,
       })
     } catch {
       // toast is handled in downloadResumeFile
@@ -156,10 +158,13 @@ export function ReviewPage() {
     )
   }
 
-  const jobTitle = generation.jobTitle || 'Target Position'
-  const companyName = generation.companyName || 'Target Company'
-  const templateName = generation.templateName || 'ATS Single Column'
-  const atsOverallScore = generation.atsScore?.overall ?? 0
+  const gen = generation as any
+  const jobTitle = gen.jobTitle || gen.job_title || 'Target Position'
+  const companyName = gen.companyName || gen.company_name || 'Target Company'
+  const templateName = gen.templateName || (gen.template_id === 'tpl_minimal_tech' ? 'Minimal Tech' : 'ATS Single Column')
+  const atsOverallScore = gen.atsScore?.overall ?? gen.atsScore?.score ?? gen.ats_score?.score ?? 0
+  const pdfUrl = gen.compiledPdfUrl || gen.pdfUrl
+  const pdfUrlExpiresAt = gen.pdfUrlExpiresAt
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto animate-in fade-in duration-300" data-testid="review-page">
@@ -330,7 +335,7 @@ export function ReviewPage() {
             {/* ATS Score Tab Content (FE-5.03) */}
             <TabsContent value="ats" className="mt-0">
               <AtsScoreTab
-                scoreData={generation.atsScore}
+                scoreData={gen.atsScore || gen.ats_score}
                 onSkillAdded={(_skill) => {
                   // After adding skill to profile, prompt or indicate re-score opportunity
                   toast.info('Skill saved to profile! It will be prioritized in your next generation.')
@@ -340,15 +345,15 @@ export function ReviewPage() {
 
             {/* AI Changes Tab Content (FE-5.04) */}
             <TabsContent value="changes" className="mt-0">
-              <ChangesTab changesData={generation.changes} />
+              <ChangesTab changesData={gen.changes || gen.change_summary} />
             </TabsContent>
 
             {/* Manual Edit Tab Content (FE-5.05) */}
             <TabsContent value="edit" className="mt-0">
               <EditTab
-                generationId={generation.id}
-                initialContent={generation.tailoredContent}
-                isOutOfDate={isOutOfDate || generation.isOutOfDate}
+                generationId={gen.id}
+                initialContent={gen.tailoredContent || gen.tailored_content}
+                isOutOfDate={isOutOfDate || gen.isOutOfDate}
                 onSavedAndRerender={() => {
                   setIsOutOfDate(false)
                   refetch()
@@ -369,13 +374,13 @@ export function ReviewPage() {
           data-testid="right-pdf-panel"
         >
           <ReviewPdfPanel
-            pdfUrl={generation.compiledPdfUrl}
-            pdfUrlExpiresAt={generation.pdfUrlExpiresAt}
-            isOutOfDate={isOutOfDate || generation.isOutOfDate}
+            pdfUrl={pdfUrl}
+            pdfUrlExpiresAt={pdfUrlExpiresAt}
+            isOutOfDate={isOutOfDate || gen.isOutOfDate}
             isRerendering={rerenderMutation.isPending}
             isRefreshingUrl={refreshPdfUrlMutation.isPending}
-            generationId={generation.id}
-            fileName={`${generation.jobTitle?.replace(/[^a-zA-Z0-9]/g, '_') || 'resume'}.pdf`}
+            generationId={gen.id}
+            fileName={`${jobTitle.replace(/[^a-zA-Z0-9]/g, '_') || 'resume'}.pdf`}
             onDownload={handleDownloadPdf}
             onRerender={handleRerender}
             onRefreshPdfUrl={handleRefreshPdfUrl}

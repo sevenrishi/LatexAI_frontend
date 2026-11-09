@@ -90,6 +90,7 @@ export function useRefreshPdfUrl() {
         return {
           ...old,
           compiledPdfUrl: data.compiledPdfUrl,
+          pdfUrl: data.compiledPdfUrl,
           pdfUrlExpiresAt: data.expiresAt,
         }
       })

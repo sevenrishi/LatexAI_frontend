@@ -66,8 +66,9 @@ export async function downloadResumeFile(options: DownloadOptions): Promise<stri
     let downloadUrl: string | undefined
     try {
       const response = await generateApi.getDownloadUrl(generationId, format)
-      if (response && response.url) {
-        downloadUrl = response.url
+      const res = response as unknown as { url?: string; downloadUrl?: string }
+      if (res && (res.url || res.downloadUrl)) {
+        downloadUrl = res.url || res.downloadUrl
       }
     } catch {
       // Fallback to locally available signed URL or source if API route fails
