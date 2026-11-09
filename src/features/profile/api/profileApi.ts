@@ -705,193 +705,193 @@ export const profileApi = {
         const { data: { session } } = await supabase.auth.getSession()
         const user = session?.user
 
-      if (user) {
-        // Contact & Summary in 'profiles'
-        const profileUpdates: Record<string, unknown> = {
-          updated_at: new Date().toISOString(),
-        }
-
-        if (payload.sections?.contact !== false && imported.contact) {
-          if (imported.contact.fullName) profileUpdates.full_name = imported.contact.fullName
-          if (imported.contact.headline !== undefined) profileUpdates.headline = imported.contact.headline
-          if (imported.contact.email) profileUpdates.email = imported.contact.email
-          if (imported.contact.phone !== undefined) profileUpdates.phone = imported.contact.phone
-          if (imported.contact.location !== undefined) profileUpdates.location = imported.contact.location
-
-          // Update links jsonb
-          const { data: cur } = await supabase.from('profiles').select('links').eq('id', user.id).maybeSingle()
-          const curLinks: Array<{ id: string; label: string; url: string }> = Array.isArray(cur?.links) ? cur.links : []
-          const websiteUrl = imported.contact.website || curLinks.find((l) => l.id === 'website')?.url
-          const githubUrl = imported.contact.github || curLinks.find((l) => l.id === 'github')?.url
-          const linkedinUrl = imported.contact.linkedin || curLinks.find((l) => l.id === 'linkedin')?.url
-
-          const newLinks: Array<{ id: string; label: string; url: string }> = []
-          if (websiteUrl) newLinks.push({ id: 'website', label: 'Website', url: websiteUrl })
-          if (linkedinUrl) newLinks.push({ id: 'linkedin', label: 'LinkedIn', url: linkedinUrl })
-          if (githubUrl) newLinks.push({ id: 'github', label: 'GitHub', url: githubUrl })
-
-          const custom = curLinks.filter((l) => !['website', 'github', 'linkedin'].includes(l.id))
-          for (const cl of custom) {
-            newLinks.push(cl)
+        if (user) {
+          // Contact & Summary in 'profiles'
+          const profileUpdates: Record<string, unknown> = {
+            updated_at: new Date().toISOString(),
           }
-          profileUpdates.links = newLinks
-        }
 
-        if (payload.sections?.summary !== false && imported.summary) {
-          profileUpdates.summary = imported.summary
-        }
+          if (payload.sections?.contact !== false && imported.contact) {
+            if (imported.contact.fullName) profileUpdates.full_name = imported.contact.fullName
+            if (imported.contact.headline !== undefined) profileUpdates.headline = imported.contact.headline
+            if (imported.contact.email) profileUpdates.email = imported.contact.email
+            if (imported.contact.phone !== undefined) profileUpdates.phone = imported.contact.phone
+            if (imported.contact.location !== undefined) profileUpdates.location = imported.contact.location
 
-        if (Object.keys(profileUpdates).length > 1) {
-          await supabase.from('profiles').update(profileUpdates).eq('id', user.id)
-        }
+            // Update links jsonb
+            const { data: cur } = await supabase.from('profiles').select('links').eq('id', user.id).maybeSingle()
+            const curLinks: Array<{ id: string; label: string; url: string }> = Array.isArray(cur?.links) ? cur.links : []
+            const websiteUrl = imported.contact.website || curLinks.find((l) => l.id === 'website')?.url
+            const githubUrl = imported.contact.github || curLinks.find((l) => l.id === 'github')?.url
+            const linkedinUrl = imported.contact.linkedin || curLinks.find((l) => l.id === 'linkedin')?.url
 
-        // Experience
-        if (payload.sections?.experience !== false && Array.isArray(imported.experience)) {
-          if (payload.strategy === 'replace') {
-            await supabase.from('profile_experience').delete().eq('user_id', user.id)
+            const newLinks: Array<{ id: string; label: string; url: string }> = []
+            if (websiteUrl) newLinks.push({ id: 'website', label: 'Website', url: websiteUrl })
+            if (linkedinUrl) newLinks.push({ id: 'linkedin', label: 'LinkedIn', url: linkedinUrl })
+            if (githubUrl) newLinks.push({ id: 'github', label: 'GitHub', url: githubUrl })
+
+            const custom = curLinks.filter((l) => !['website', 'github', 'linkedin'].includes(l.id))
+            for (const cl of custom) {
+              newLinks.push(cl)
+            }
+            profileUpdates.links = newLinks
           }
-          const { data: curExp } = await supabase.from('profile_experience').select('company, title').eq('user_id', user.id)
-          const seenExpKeys = new Set((curExp || []).map((e: any) => `${(e.company || '').trim().toLowerCase()}::${(e.title || '').trim().toLowerCase()}`))
 
-          for (let i = 0; i < imported.experience.length; i++) {
-            const exp = imported.experience[i] as any
-            const key = `${String(exp.company || '').trim().toLowerCase()}::${String(exp.title || '').trim().toLowerCase()}`
-            if (payload.strategy !== 'replace' && seenExpKeys.has(key)) continue
-            seenExpKeys.add(key)
-
-            const bullets = (Array.isArray(exp.bullets) ? exp.bullets : []).map((b: any) => ({
-              id: toValidUuid(typeof b === 'object' ? b?.id : ''),
-              text: typeof b === 'string' ? b : b?.text || '',
-            }))
-            await supabase.from('profile_experience').insert({
-              id: toValidUuid(exp.id),
-              user_id: user.id,
-              company: exp.company || '',
-              title: exp.title || '',
-              location: exp.location || '',
-              start_date: exp.startDate || exp.start_date || '',
-              end_date: exp.endDate || exp.end_date || null,
-              current: Boolean(exp.current),
-              bullets,
-              sort_order: i,
-            })
+          if (payload.sections?.summary !== false && imported.summary) {
+            profileUpdates.summary = imported.summary
           }
-        }
 
-        // Education
-        if (payload.sections?.education !== false && Array.isArray(imported.education)) {
-          if (payload.strategy === 'replace') {
-            await supabase.from('profile_education').delete().eq('user_id', user.id)
+          if (Object.keys(profileUpdates).length > 1) {
+            await supabase.from('profiles').update(profileUpdates).eq('id', user.id)
           }
-          const { data: curEdu } = await supabase.from('profile_education').select('institution, degree').eq('user_id', user.id)
-          const seenEduKeys = new Set((curEdu || []).map((e: any) => `${(e.institution || '').trim().toLowerCase()}::${(e.degree || '').trim().toLowerCase()}`))
 
-          for (let i = 0; i < imported.education.length; i++) {
-            const edu = imported.education[i] as any
-            const key = `${String(edu.institution || '').trim().toLowerCase()}::${String(edu.degree || '').trim().toLowerCase()}`
-            if (payload.strategy !== 'replace' && seenEduKeys.has(key)) continue
-            seenEduKeys.add(key)
+          // Experience
+          if (payload.sections?.experience !== false && Array.isArray(imported.experience)) {
+            if (payload.strategy === 'replace') {
+              await supabase.from('profile_experience').delete().eq('user_id', user.id)
+            }
+            const { data: curExp } = await supabase.from('profile_experience').select('company, title').eq('user_id', user.id)
+            const seenExpKeys = new Set((curExp || []).map((e: any) => `${(e.company || '').trim().toLowerCase()}::${(e.title || '').trim().toLowerCase()}`))
 
-            await supabase.from('profile_education').insert({
-              id: toValidUuid(edu.id),
-              user_id: user.id,
-              institution: edu.institution || '',
-              degree: edu.degree || '',
-              field_of_study: edu.fieldOfStudy || edu.field_of_study || '',
-              location: edu.location || '',
-              start_date: edu.startDate || edu.start_date || '',
-              end_date: edu.endDate || edu.end_date || '',
-              current: Boolean(edu.current),
-              gpa: edu.gpa ? String(edu.gpa) : '',
-              honors: edu.honors || '',
-              sort_order: i,
-            })
-          }
-        }
+            for (let i = 0; i < imported.experience.length; i++) {
+              const exp = imported.experience[i] as any
+              const key = `${String(exp.company || '').trim().toLowerCase()}::${String(exp.title || '').trim().toLowerCase()}`
+              if (payload.strategy !== 'replace' && seenExpKeys.has(key)) continue
+              seenExpKeys.add(key)
 
-        // Skills
-        if (payload.sections?.skills !== false && Array.isArray(imported.skills)) {
-          if (payload.strategy === 'replace') {
-            await supabase.from('profile_skills').delete().eq('user_id', user.id)
-          }
-          const skillRows = imported.skills
-            .map((s: any, idx: number) => {
-              const name = typeof s === 'string' ? s.trim() : s?.name?.trim() || ''
-              const category = typeof s === 'object' && s?.category ? s.category : 'Other'
-              return {
-                id: toValidUuid(typeof s === 'object' ? s?.id : ''),
+              const bullets = (Array.isArray(exp.bullets) ? exp.bullets : []).map((b: any) => ({
+                id: toValidUuid(typeof b === 'object' ? b?.id : ''),
+                text: typeof b === 'string' ? b : b?.text || '',
+              }))
+              await supabase.from('profile_experience').insert({
+                id: toValidUuid(exp.id),
                 user_id: user.id,
-                name,
-                category,
-                sort_order: idx,
-              }
-            })
-            .filter((s: any) => Boolean(s.name))
+                company: exp.company || '',
+                title: exp.title || '',
+                location: exp.location || '',
+                start_date: exp.startDate || exp.start_date || '',
+                end_date: exp.endDate || exp.end_date || null,
+                current: Boolean(exp.current),
+                bullets,
+                sort_order: i,
+              })
+            }
+          }
 
-          if (skillRows.length > 0) {
-            await supabase.from('profile_skills').upsert(skillRows, { onConflict: 'user_id,name' })
+          // Education
+          if (payload.sections?.education !== false && Array.isArray(imported.education)) {
+            if (payload.strategy === 'replace') {
+              await supabase.from('profile_education').delete().eq('user_id', user.id)
+            }
+            const { data: curEdu } = await supabase.from('profile_education').select('institution, degree').eq('user_id', user.id)
+            const seenEduKeys = new Set((curEdu || []).map((e: any) => `${(e.institution || '').trim().toLowerCase()}::${(e.degree || '').trim().toLowerCase()}`))
+
+            for (let i = 0; i < imported.education.length; i++) {
+              const edu = imported.education[i] as any
+              const key = `${String(edu.institution || '').trim().toLowerCase()}::${String(edu.degree || '').trim().toLowerCase()}`
+              if (payload.strategy !== 'replace' && seenEduKeys.has(key)) continue
+              seenEduKeys.add(key)
+
+              await supabase.from('profile_education').insert({
+                id: toValidUuid(edu.id),
+                user_id: user.id,
+                institution: edu.institution || '',
+                degree: edu.degree || '',
+                field_of_study: edu.fieldOfStudy || edu.field_of_study || '',
+                location: edu.location || '',
+                start_date: edu.startDate || edu.start_date || '',
+                end_date: edu.endDate || edu.end_date || '',
+                current: Boolean(edu.current),
+                gpa: edu.gpa ? String(edu.gpa) : '',
+                honors: edu.honors || '',
+                sort_order: i,
+              })
+            }
+          }
+
+          // Skills
+          if (payload.sections?.skills !== false && Array.isArray(imported.skills)) {
+            if (payload.strategy === 'replace') {
+              await supabase.from('profile_skills').delete().eq('user_id', user.id)
+            }
+            const skillRows = imported.skills
+              .map((s: any, idx: number) => {
+                const name = typeof s === 'string' ? s.trim() : s?.name?.trim() || ''
+                const category = typeof s === 'object' && s?.category ? s.category : 'Other'
+                return {
+                  id: toValidUuid(typeof s === 'object' ? s?.id : ''),
+                  user_id: user.id,
+                  name,
+                  category,
+                  sort_order: idx,
+                }
+              })
+              .filter((s: any) => Boolean(s.name))
+
+            if (skillRows.length > 0) {
+              await supabase.from('profile_skills').upsert(skillRows, { onConflict: 'user_id,name' })
+            }
+          }
+
+          // Certifications
+          if (payload.sections?.certifications !== false && Array.isArray(imported.certifications)) {
+            if (payload.strategy === 'replace') {
+              await supabase.from('profile_certifications').delete().eq('user_id', user.id)
+            }
+            const { data: curCerts } = await supabase.from('profile_certifications').select('name, issuer').eq('user_id', user.id)
+            const seenCertKeys = new Set((curCerts || []).map((c) => `${(c.name || '').trim().toLowerCase()}::${(c.issuer || '').trim().toLowerCase()}`))
+
+            for (let i = 0; i < imported.certifications.length; i++) {
+              const cert: any = imported.certifications[i]
+              const key = `${String(cert.name || '').trim().toLowerCase()}::${String(cert.issuer || '').trim().toLowerCase()}`
+              if (payload.strategy !== 'replace' && seenCertKeys.has(key)) continue
+              seenCertKeys.add(key)
+
+              await supabase.from('profile_certifications').insert({
+                id: toValidUuid(cert.id),
+                user_id: user.id,
+                name: cert.name || '',
+                issuer: cert.issuer || '',
+                issue_date: cert.issueDate || cert.issue_date || '',
+                expiry_date: cert.expiryDate || cert.expiry_date || null,
+                does_not_expire: Boolean(cert.doesNotExpire ?? cert.does_not_expire),
+                credential_id: cert.credentialId || cert.credential_id || '',
+                credential_url: cert.credentialUrl || cert.credential_url || '',
+                sort_order: i,
+              })
+            }
+          }
+
+          // Projects
+          if (payload.sections?.projects !== false && Array.isArray(imported.projects)) {
+            if (payload.strategy === 'replace') {
+              await supabase.from('profile_projects').delete().eq('user_id', user.id)
+            }
+            const { data: curProj } = await supabase.from('profile_projects').select('title').eq('user_id', user.id)
+            const seenProjKeys = new Set((curProj || []).map((p) => (p.title || '').trim().toLowerCase()))
+
+            for (let i = 0; i < imported.projects.length; i++) {
+              const proj: any = imported.projects[i]
+              const key = String(proj.title || '').trim().toLowerCase()
+              if (payload.strategy !== 'replace' && seenProjKeys.has(key)) continue
+              seenProjKeys.add(key)
+
+              const tech_stack = Array.isArray(proj.techStack) ? proj.techStack : Array.isArray(proj.tech_stack) ? proj.tech_stack : []
+              await supabase.from('profile_projects').insert({
+                id: toValidUuid(proj.id),
+                user_id: user.id,
+                title: proj.title || '',
+                role: proj.role || '',
+                description: proj.description || '',
+                tech_stack,
+                live_url: proj.liveUrl || proj.live_url || '',
+                repo_url: proj.repoUrl || proj.repo_url || '',
+                sort_order: i,
+              })
+            }
           }
         }
-
-        // Certifications
-        if (payload.sections?.certifications !== false && Array.isArray(imported.certifications)) {
-          if (payload.strategy === 'replace') {
-            await supabase.from('profile_certifications').delete().eq('user_id', user.id)
-          }
-          const { data: curCerts } = await supabase.from('profile_certifications').select('name, issuer').eq('user_id', user.id)
-          const seenCertKeys = new Set((curCerts || []).map((c) => `${(c.name || '').trim().toLowerCase()}::${(c.issuer || '').trim().toLowerCase()}`))
-
-          for (let i = 0; i < imported.certifications.length; i++) {
-            const cert: any = imported.certifications[i]
-            const key = `${String(cert.name || '').trim().toLowerCase()}::${String(cert.issuer || '').trim().toLowerCase()}`
-            if (payload.strategy !== 'replace' && seenCertKeys.has(key)) continue
-            seenCertKeys.add(key)
-
-            await supabase.from('profile_certifications').insert({
-              id: toValidUuid(cert.id),
-              user_id: user.id,
-              name: cert.name || '',
-              issuer: cert.issuer || '',
-              issue_date: cert.issueDate || cert.issue_date || '',
-              expiry_date: cert.expiryDate || cert.expiry_date || null,
-              does_not_expire: Boolean(cert.doesNotExpire ?? cert.does_not_expire),
-              credential_id: cert.credentialId || cert.credential_id || '',
-              credential_url: cert.credentialUrl || cert.credential_url || '',
-              sort_order: i,
-            })
-          }
-        }
-
-        // Projects
-        if (payload.sections?.projects !== false && Array.isArray(imported.projects)) {
-          if (payload.strategy === 'replace') {
-            await supabase.from('profile_projects').delete().eq('user_id', user.id)
-          }
-          const { data: curProj } = await supabase.from('profile_projects').select('title').eq('user_id', user.id)
-          const seenProjKeys = new Set((curProj || []).map((p) => (p.title || '').trim().toLowerCase()))
-
-          for (let i = 0; i < imported.projects.length; i++) {
-            const proj: any = imported.projects[i]
-            const key = String(proj.title || '').trim().toLowerCase()
-            if (payload.strategy !== 'replace' && seenProjKeys.has(key)) continue
-            seenProjKeys.add(key)
-
-            const tech_stack = Array.isArray(proj.techStack) ? proj.techStack : Array.isArray(proj.tech_stack) ? proj.tech_stack : []
-            await supabase.from('profile_projects').insert({
-              id: toValidUuid(proj.id),
-              user_id: user.id,
-              title: proj.title || '',
-              role: proj.role || '',
-              description: proj.description || '',
-              tech_stack,
-              live_url: proj.liveUrl || proj.live_url || '',
-              repo_url: proj.repoUrl || proj.repo_url || '',
-              sort_order: i,
-            })
-          }
-        }
-      }
-    } catch (directErr) {
+      } catch (directErr) {
       }
     }
 
