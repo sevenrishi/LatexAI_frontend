@@ -113,8 +113,8 @@ export async function request<T>(
     throw new ApiError(0, 'NETWORK_ERROR', (err as Error).message || 'Network connection failed')
   }
 
-  // 401 Interceptor: Refresh token & retry once
-  if (res.status === 401 && !skipAuth && !isRetry) {
+  // 401 Interceptor: Refresh token & retry once (skip for auth endpoints to prevent loops)
+  if (res.status === 401 && !skipAuth && !isRetry && !cleanEndpoint.startsWith('auth/')) {
     const newToken = await refreshAuthToken()
     if (newToken) {
       return request<T>(endpoint, options, true)

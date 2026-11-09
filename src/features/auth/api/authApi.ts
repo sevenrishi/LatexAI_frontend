@@ -58,21 +58,25 @@ export const DEMO_PROFILE: UserProfile = {
 
 export const authApi = {
   async getMe(): Promise<UserProfile> {
-    // 1. If Supabase session is active, prioritize real user data
+    // 1. Check if demo session is active in local storage
+    const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
+    if (isDemo) {
+      const stored = localStorage.getItem('latexai_demo_profile')
+      if (stored) {
+        try {
+          return JSON.parse(stored) as UserProfile
+        } catch {
+          return DEMO_PROFILE
+        }
+      }
+      return DEMO_PROFILE
+    }
+
+    // 2. If Supabase session is active, read ground truth directly from Supabase DB
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
         const user = session.user
-
-        // Try remote API first
-        try {
-          const remote = await api.get<UserProfile>('/auth/me')
-          if (remote?.id && remote.fullName !== 'Alex Rivera' && remote.fullName !== 'Alex Morgan') {
-            return remote
-          }
-        } catch {
-          // Fallback to Supabase direct DB query
-        }
 
         const { data: dbProfile } = await supabase
           .from('profiles')
@@ -104,17 +108,7 @@ export const authApi = {
         }
       }
     } catch {
-      // Continue to demo fallback if unauthenticated
-    }
-
-    const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
-    const stored = localStorage.getItem('latexai_demo_profile')
-    if (isDemo && stored) {
-      try {
-        return JSON.parse(stored) as UserProfile
-      } catch {
-        return DEMO_PROFILE
-      }
+      // Fallback to remote API below
     }
 
     try {
@@ -136,22 +130,65 @@ export const authApi = {
   },
 
   async completeOnboarding(payload?: OnboardingCompletionPayload): Promise<{ onboardingCompleted: boolean }> {
+    const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
+    if (isDemo) {
+      const stored = localStorage.getItem('latexai_demo_profile')
+      const current = stored ? JSON.parse(stored) : DEMO_PROFILE
+      const updated = {
+        ...current,
+        onboardingCompleted: true,
+        activeTemplateId: payload?.templateId || current.activeTemplateId || 'tpl_default_swe',
+      }
+      localStorage.setItem('latexai_demo_profile', JSON.stringify(updated))
+      return { onboardingCompleted: true }
+    }
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        // 1. Update user auth metadata in Supabase
+        await supabase.auth.updateUser({
+          data: {
+            full_name: payload?.fullName || session.user.user_metadata?.full_name,
+            target_role: payload?.targetRole,
+            headline: payload?.headline || payload?.targetRole,
+            industry: payload?.industry,
+            experience_level: payload?.experienceLevel,
+            active_template_id: payload?.templateId,
+            tone_preference: payload?.tonePreference,
+            bullet_density: payload?.bulletDensity,
+            onboarding_completed: true,
+          },
+        })
+
+        // 2. Persist to profiles table in Supabase DB
+        const profileUpdate: Record<string, unknown> = {
+          onboarding_completed: true,
+          updated_at: new Date().toISOString(),
+        }
+        if (payload?.fullName) profileUpdate.full_name = payload.fullName
+        if (payload?.headline || payload?.targetRole) profileUpdate.headline = payload.headline || payload.targetRole
+        if (payload?.templateId) profileUpdate.active_template_id = payload.templateId
+
+        await supabase.from('profiles').update(profileUpdate).eq('id', session.user.id)
+
+        // Best effort remote sync to backend without throwing
+        try {
+          await api.post<{ onboardingCompleted: boolean }>('/auth/onboarding/complete', payload)
+        } catch {
+          // best-effort
+        }
+
+        return { onboardingCompleted: true }
+      }
+    } catch (sbErr) {
+      console.warn('Supabase complete onboarding warning:', sbErr)
+    }
+
     try {
       return await api.post<{ onboardingCompleted: boolean }>('/auth/onboarding/complete', payload)
     } catch (err) {
-      const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
-      if (isDemo) {
-        const stored = localStorage.getItem('latexai_demo_profile')
-        const current = stored ? JSON.parse(stored) : DEMO_PROFILE
-        const updated = {
-          ...current,
-          onboardingCompleted: true,
-          activeTemplateId: payload?.templateId || current.activeTemplateId || 'tpl_default_swe',
-        }
-        localStorage.setItem('latexai_demo_profile', JSON.stringify(updated))
-        return { onboardingCompleted: true }
-      }
-      throw err
+      return { onboardingCompleted: true }
     }
   },
 
@@ -179,6 +216,15 @@ export const authApi = {
   },
 
   async updateProfile(payload: { fullName?: string; headline?: string }): Promise<UserProfile> {
+    const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
+    if (isDemo) {
+      const stored = localStorage.getItem('latexai_demo_profile')
+      const current = stored ? JSON.parse(stored) : DEMO_PROFILE
+      const updated = { ...current, ...payload }
+      localStorage.setItem('latexai_demo_profile', JSON.stringify(updated))
+      return updated
+    }
+
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
@@ -189,6 +235,7 @@ export const authApi = {
         if (payload.headline !== undefined) updateData.headline = payload.headline
 
         await supabase.from('profiles').update(updateData).eq('id', session.user.id)
+        return this.getMe()
       }
     } catch {
       // Direct update best-effort
@@ -200,14 +247,6 @@ export const authApi = {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
         return this.getMe()
-      }
-      const isDemo = Boolean(localStorage.getItem('latexai_demo_token'))
-      if (isDemo) {
-        const stored = localStorage.getItem('latexai_demo_profile')
-        const current = stored ? JSON.parse(stored) : DEMO_PROFILE
-        const updated = { ...current, ...payload }
-        localStorage.setItem('latexai_demo_profile', JSON.stringify(updated))
-        return updated
       }
       throw err
     }

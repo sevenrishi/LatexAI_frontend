@@ -113,7 +113,15 @@ export function useAuthBootstrap() {
         return
       }
 
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') {
+      // Token rotation only updates session credentials without re-triggering heavy profile queries
+      if (event === 'TOKEN_REFRESHED') {
+        if (isMounted) {
+          setSession(session, session.user)
+        }
+        return
+      }
+
+      if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
         localStorage.removeItem('latexai_demo_token')
         localStorage.removeItem('latexai_demo_user')
         localStorage.removeItem('latexai_demo_profile')

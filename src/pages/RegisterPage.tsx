@@ -99,15 +99,20 @@ export function RegisterPage() {
           },
         })
 
-        if (!error && (data?.session || data?.user)) {
+        if (error) {
+          setErrorMessage(error.message || 'Failed to create account.')
+          return
+        }
+
+        if (data?.session || data?.user) {
           registeredSession = data.session
           registeredUser = data.user
         }
-      } catch {
-        // Fallback to backend API signup
+      } catch (sbErr) {
+        console.warn('Supabase sign-up network error:', sbErr)
       }
 
-      // If Supabase didn't register or is offline/dummy, register via backend API
+      // If Supabase threw network error and neither session nor user exist, fallback to backend API
       if (!registeredSession && !registeredUser) {
         try {
           const res = await authApi.signup(email.trim(), password, fullName.trim())

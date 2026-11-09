@@ -41,26 +41,32 @@ export function LoginPage() {
 
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
-          email,
+          email: email.trim(),
           password,
         })
 
-        if (!error && data?.session && data?.user) {
-          session = data.session
-          user = data.user
-        } else if (error && error.message.toLowerCase().includes('email not confirmed')) {
-          toast.error('Email not verified yet. Please check your inbox.')
-          navigate(`/verify-email?email=${encodeURIComponent(email)}`)
+        if (error) {
+          if (error.message.toLowerCase().includes('email not confirmed')) {
+            toast.error('Email not verified yet. Please check your inbox.')
+            navigate(`/verify-email?email=${encodeURIComponent(email.trim())}`)
+            return
+          }
+          setErrorMessage(error.message || 'Invalid email or password.')
           return
         }
-      } catch {
-        // Fallback to backend API
+
+        if (data?.session && data?.user) {
+          session = data.session
+          user = data.user
+        }
+      } catch (sbErr) {
+        console.warn('Supabase sign-in network error:', sbErr)
       }
 
-      // If Supabase didn't authenticate, authenticate against backend /auth/login
+      // If Supabase threw a network error and neither session nor user exist, fallback to backend API
       if (!session || !user) {
         try {
-          const backendAuth = await authApi.login(email, password)
+          const backendAuth = await authApi.login(email.trim(), password)
           if (backendAuth?.session && backendAuth?.user) {
             session = backendAuth.session
             user = backendAuth.user
@@ -87,7 +93,7 @@ export function LoginPage() {
         )
 
         if (!isVerified) {
-          navigate(`/verify-email?email=${encodeURIComponent(user.email || email)}`)
+          navigate(`/verify-email?email=${encodeURIComponent(user.email || email.trim())}`)
           return
         }
 
