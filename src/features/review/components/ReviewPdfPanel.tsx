@@ -4,6 +4,7 @@ import {
   RefreshCw,
   AlertTriangle,
   FileCode,
+  ExternalLink,
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -33,7 +34,7 @@ export function ReviewPdfPanel({
   isRerendering = false,
   isRefreshingUrl = false,
   fileName = 'tailored-resume.pdf',
-  generationId: _generationId,
+  generationId,
   onDownload,
   onRerender,
   onRefreshPdfUrl,
@@ -142,6 +143,26 @@ export function ReviewPdfPanel({
               </Button>
             )}
 
+            {/* Open in dedicated tab */}
+            {generationId && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => window.open(`/preview/${generationId}`, '_blank')}
+                    className="h-7 px-2 text-xs gap-1 text-muted-foreground hover:text-foreground"
+                    data-testid="open-pdf-tab-button"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    <span className="hidden sm:inline">Open in Tab</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Open full PDF preview in a new browser tab</TooltipContent>
+              </Tooltip>
+            )}
+
             {/* Download PDF button */}
             {onDownload && (
               <Button
@@ -200,6 +221,8 @@ export function ReviewPdfPanel({
               onDownload={onDownload}
               onCompileRequest={onRerender}
               isCompiling={isRerendering}
+              openInNewTabUrl={generationId ? `/preview/${generationId}` : undefined}
+              onOpenInNewTab={generationId ? () => window.open(`/preview/${generationId}`, '_blank') : undefined}
               emptyMessage="No compiled PDF available for this resume generation. Click Re-render to generate one."
             />
           </div>

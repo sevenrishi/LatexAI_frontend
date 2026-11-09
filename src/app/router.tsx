@@ -45,6 +45,7 @@ const TemplateEditorPage = lazy(() => import('@/pages/TemplateEditorPage'))
 const GeneratePage = lazy(() => import('@/pages/GeneratePage'))
 const GenerationProgressPage = lazy(() => import('@/pages/GenerationProgressPage'))
 const ReviewPage = lazy(() => import('@/pages/ReviewPage'))
+const PdfPreviewPage = lazy(() => import('@/pages/PdfPreviewPage'))
 const HistoryPage = lazy(() => import('@/pages/HistoryPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
@@ -144,6 +145,10 @@ export const router = createBrowserRouter([
               { path: '/settings', element: withSuspense(SettingsPage) },
             ],
           },
+          // Standalone Fullscreen Preview Routes (without AppLayout sidebar)
+          { path: '/preview/:id', element: withSuspense(PdfPreviewPage) },
+          { path: '/review/:id/pdf', element: withSuspense(PdfPreviewPage) },
+          { path: '/review/:id/preview', element: withSuspense(PdfPreviewPage) },
         ],
       },
     ],

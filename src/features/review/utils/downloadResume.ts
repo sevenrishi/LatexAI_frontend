@@ -80,6 +80,34 @@ export async function downloadResumeFile(options: DownloadOptions): Promise<stri
         throw new Error('No PDF URL available for download')
       }
 
+      // Try blob download so the browser directly saves the file to disk
+      // rather than opening cross-origin signed URLs in a new browser tab
+      if (typeof fetch === 'function') {
+        try {
+          const res = await fetch(targetUrl)
+          if (res.ok) {
+            const blob = await res.blob()
+            const blobUrl =
+              typeof URL.createObjectURL === 'function'
+                ? URL.createObjectURL(blob)
+                : targetUrl
+            const link = document.createElement('a')
+            link.href = blobUrl
+            link.download = customFileName
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            if (typeof URL.revokeObjectURL === 'function' && blobUrl !== targetUrl) {
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 1000)
+            }
+            toast.success(`Downloading ${customFileName}`)
+            return customFileName
+          }
+        } catch {
+          // If blob fetch fails (e.g. CORS or offline mock), proceed to direct anchor fallback
+        }
+      }
+
       const link = document.createElement('a')
       link.href = targetUrl
       link.download = customFileName

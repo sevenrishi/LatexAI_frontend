@@ -11,6 +11,7 @@ import {
   AlertCircle,
   Layers,
   Edit3,
+  ExternalLink,
 } from 'lucide-react'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -68,20 +69,24 @@ export function ReviewPage() {
     }
   }
 
-  // Handle PDF download (FE-5.06)
+  // Handle PDF download via auto-closing preview tab (FE-5.06)
   const handleDownloadPdf = async () => {
     if (!id || !generation) return
     const gen = generation as any
-    try {
-      await downloadResumeFile({
-        generationId: id,
-        format: 'pdf',
-        jobTitle: gen.jobTitle || gen.job_title,
-        companyName: gen.companyName || gen.company_name,
-        fallbackPdfUrl: gen.compiledPdfUrl || gen.pdfUrl,
-      })
-    } catch {
-      // toast is handled in downloadResumeFile
+    const previewTab = window.open(`/preview/${id}?download=true`, '_blank')
+    if (!previewTab) {
+      // Fallback to direct download in case popup blocker intercepts new tab
+      try {
+        await downloadResumeFile({
+          generationId: id,
+          format: 'pdf',
+          jobTitle: gen.jobTitle || gen.job_title,
+          companyName: gen.companyName || gen.company_name,
+          fallbackPdfUrl: gen.compiledPdfUrl || gen.pdfUrl,
+        })
+      } catch {
+        // toast is handled in downloadResumeFile
+      }
     }
   }
 
@@ -236,6 +241,19 @@ export function ReviewPage() {
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Reuse JD</span>
             </Link>
+          </Button>
+
+          {/* Open Preview in New Tab */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.open(`/preview/${generation.id}`, '_blank')}
+            className="text-xs gap-1.5 shadow-xs"
+            data-testid="header-open-pdf-tab"
+            title="Open PDF preview in a new tab"
+          >
+            <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="hidden sm:inline">Open in Tab</span>
           </Button>
 
           {/* Download LaTeX .tex */}

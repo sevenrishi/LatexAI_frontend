@@ -38,6 +38,8 @@ export interface PdfViewerProps {
   onCompileRequest?: () => void
   isCompiling?: boolean
   emptyMessage?: string
+  openInNewTabUrl?: string
+  onOpenInNewTab?: () => void
 }
 
 export function PdfViewer({
@@ -48,6 +50,8 @@ export function PdfViewer({
   onCompileRequest,
   isCompiling = false,
   emptyMessage = 'Compile LaTeX to view rendered PDF',
+  openInNewTabUrl,
+  onOpenInNewTab,
 }: PdfViewerProps) {
   const [numPages, setNumPages] = useState<number>(0)
   const [pageNumber, setPageNumber] = useState<number>(1)
@@ -118,6 +122,14 @@ export function PdfViewer({
   }
 
   const openInNewTab = () => {
+    if (onOpenInNewTab) {
+      onOpenInNewTab()
+      return
+    }
+    if (openInNewTabUrl) {
+      window.open(openInNewTabUrl, '_blank')
+      return
+    }
     if (!file) return
     const url = typeof file === 'string' ? file : URL.createObjectURL(file)
     window.open(url, '_blank')
