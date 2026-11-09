@@ -110,16 +110,16 @@ export function useGenerationStatus(
         rawStatus === 'COMPLETED'
           ? 'COMPLETED'
           : rawStatus === 'FAILED' || rawStatus === 'CANCELLED'
-          ? 'FAILED'
-          : rawStatus === 'EXTRACTING'
-          ? 'ANALYZING'
-          : rawStatus === 'TAILORING'
-          ? 'TAILORING'
-          : rawStatus === 'RENDERING'
-          ? 'RENDERING'
-          : rawStatus === 'COMPILING'
-          ? 'COMPILING'
-          : (rawStatus as GenerationStatus) || 'QUEUED'
+            ? 'FAILED'
+            : rawStatus === 'EXTRACTING'
+              ? 'ANALYZING'
+              : rawStatus === 'TAILORING'
+                ? 'TAILORING'
+                : rawStatus === 'RENDERING'
+                  ? 'RENDERING'
+                  : rawStatus === 'COMPILING'
+                    ? 'COMPILING'
+                    : (rawStatus as GenerationStatus) || 'QUEUED'
 
       // Normalize stage (backend sends currentStage, frontend types define stage)
       const rawStage = res.stage || (res as unknown as { currentStage?: string }).currentStage
@@ -127,8 +127,8 @@ export function useGenerationStatus(
         normalizedStatus === 'FAILED'
           ? 'Generation failed'
           : normalizedStatus === 'COMPLETED'
-          ? 'Resume generated successfully'
-          : rawStage
+            ? 'Resume generated successfully'
+            : rawStage
 
       // Normalize error details
       const rawErrorMessage =
@@ -139,9 +139,9 @@ export function useGenerationStatus(
         res.error ||
         (rawErrorMessage
           ? {
-              code: rawErrorCode || 'GENERATION_FAILED',
-              message: rawErrorMessage,
-            }
+            code: rawErrorCode || 'GENERATION_FAILED',
+            message: rawErrorMessage,
+          }
           : null)
 
       if (normalizedStatus) {
