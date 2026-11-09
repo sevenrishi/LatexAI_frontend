@@ -104,17 +104,57 @@ export function useGenerationStatus(
 
       setData(res)
 
-      if (res.status) {
-        setStatus(res.status)
+      // Normalize status and casing (e.g. backend lowercase 'failed' / 'completed' vs uppercase 'FAILED' / 'COMPLETED')
+      const rawStatus = (res.status || '').toUpperCase()
+      const normalizedStatus: GenerationStatus =
+        rawStatus === 'COMPLETED'
+          ? 'COMPLETED'
+          : rawStatus === 'FAILED' || rawStatus === 'CANCELLED'
+          ? 'FAILED'
+          : rawStatus === 'EXTRACTING'
+          ? 'ANALYZING'
+          : rawStatus === 'TAILORING'
+          ? 'TAILORING'
+          : rawStatus === 'RENDERING'
+          ? 'RENDERING'
+          : rawStatus === 'COMPILING'
+          ? 'COMPILING'
+          : (rawStatus as GenerationStatus) || 'QUEUED'
+
+      // Normalize stage (backend sends currentStage, frontend types define stage)
+      const rawStage = res.stage || (res as unknown as { currentStage?: string }).currentStage
+      const friendlyStage =
+        normalizedStatus === 'FAILED'
+          ? 'Generation failed'
+          : normalizedStatus === 'COMPLETED'
+          ? 'Resume generated successfully'
+          : rawStage
+
+      // Normalize error details
+      const rawErrorMessage =
+        (res as unknown as { errorMessage?: string }).errorMessage || res.error?.message
+      const rawErrorCode =
+        (res as unknown as { errorCode?: string }).errorCode || res.error?.code
+      const errObj: GenerationStatusError | null =
+        res.error ||
+        (rawErrorMessage
+          ? {
+              code: rawErrorCode || 'GENERATION_FAILED',
+              message: rawErrorMessage,
+            }
+          : null)
+
+      if (normalizedStatus) {
+        setStatus(normalizedStatus)
       }
-      if (res.stage) {
-        setStage(res.stage)
+      if (friendlyStage) {
+        setStage(friendlyStage)
       }
       if (typeof res.progress === 'number') {
         setProgress(res.progress)
       }
 
-      if (res.status === 'COMPLETED') {
+      if (normalizedStatus === 'COMPLETED') {
         isTerminalRef.current = true
         if (isMountedRef.current) {
           setIsPolling(false)
@@ -125,16 +165,16 @@ export function useGenerationStatus(
         return
       }
 
-      if (res.status === 'FAILED') {
+      if (normalizedStatus === 'FAILED') {
         isTerminalRef.current = true
         if (isMountedRef.current) setIsPolling(false)
         clearTimers()
-        const errObj = res.error || {
+        const finalErr = errObj || {
           code: 'GENERATION_FAILED',
           message: 'Resume generation or compilation failed.',
         }
-        if (isMountedRef.current) setError(errObj)
-        onErrorRef.current?.(errObj)
+        if (isMountedRef.current) setError(finalErr)
+        onErrorRef.current?.(finalErr)
         return
       }
 
