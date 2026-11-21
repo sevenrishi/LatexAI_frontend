@@ -175,33 +175,61 @@ export function AppLayout() {
       {/* Desktop Sidebar (Fixed Left Panel) */}
       <aside
         className={cn(
-          'hidden border-r border-border bg-card transition-all duration-300 md:flex md:flex-col h-screen sticky top-0 shrink-0 z-20',
+          'hidden border-r border-border bg-card transition-[width] duration-300 ease-in-out md:flex md:flex-col h-screen sticky top-0 shrink-0 z-40',
           sidebarCollapsed ? 'w-18' : 'w-64'
         )}
       >
-        <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-          <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
+        <div
+          className={cn(
+            'flex h-16 shrink-0 items-center border-b border-border relative overflow-visible transition-all duration-300',
+            sidebarCollapsed ? 'justify-center px-0' : 'px-4 justify-between'
+          )}
+        >
+          <div
+            className={cn(
+              'flex items-center gap-2.5 min-w-0 transition-opacity duration-200',
+              sidebarCollapsed ? 'cursor-pointer hover:opacity-80 justify-center' : ''
+            )}
+            onClick={sidebarCollapsed ? toggleSidebar : undefined}
+            title={sidebarCollapsed ? 'Expand sidebar' : undefined}
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
               <Sparkles className="h-5 w-5" />
             </div>
-            {!sidebarCollapsed && (
-              <span className="text-lg font-extrabold tracking-tight whitespace-nowrap">
-                Latex<span className="text-primary">AI</span>
-              </span>
-            )}
+            <span
+              className={cn(
+                'text-lg font-extrabold tracking-tight whitespace-nowrap transition-all duration-300 ease-in-out overflow-hidden',
+                sidebarCollapsed
+                  ? 'max-w-0 opacity-0 -translate-x-2 pointer-events-none'
+                  : 'max-w-[140px] opacity-100 translate-x-0'
+              )}
+            >
+              Latex<span className="text-primary">AI</span>
+            </span>
           </div>
+
           <Button
-            variant="ghost"
+            variant={sidebarCollapsed ? 'outline' : 'ghost'}
             size="icon"
             onClick={toggleSidebar}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            className={cn(
+              'transition-all duration-300 ease-in-out cursor-pointer absolute top-1/2 -translate-y-1/2 z-50',
+              sidebarCollapsed
+                ? '-right-3.5 h-7 w-7 rounded-full bg-background border border-border shadow-md hover:bg-accent hover:scale-110 p-0 text-foreground'
+                : 'right-3 h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted'
+            )}
             title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            <ChevronLeft
+              className={cn(
+                'h-4 w-4 transition-transform duration-300 ease-in-out shrink-0',
+                sidebarCollapsed ? 'rotate-180' : 'rotate-0'
+              )}
+            />
           </Button>
         </div>
 
-        <nav className="flex-1 space-y-1.5 p-3 overflow-y-auto">
+        <nav className="flex-1 space-y-1.5 p-3 overflow-y-auto overflow-x-hidden">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon
             return (
@@ -211,53 +239,91 @@ export function AppLayout() {
                 title={sidebarCollapsed ? item.name : undefined}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    'flex items-center rounded-lg text-sm font-medium transition-all duration-200 overflow-hidden',
+                    sidebarCollapsed
+                      ? 'w-10 h-10 mx-auto justify-center px-0'
+                      : 'w-full px-3 py-2 gap-3 h-10',
                     isActive
                       ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                    sidebarCollapsed && 'justify-center px-2',
                     item.highlight && !isActive && 'text-primary font-semibold'
                   )
                 }
               >
                 <Icon className="h-5 w-5 shrink-0" />
-                {!sidebarCollapsed && <span>{item.name}</span>}
+                <span
+                  className={cn(
+                    'transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden',
+                    sidebarCollapsed
+                      ? 'max-w-0 opacity-0 -translate-x-2 pointer-events-none'
+                      : 'max-w-[160px] opacity-100 translate-x-0'
+                  )}
+                >
+                  {item.name}
+                </span>
               </NavLink>
             )
           })}
         </nav>
 
-        {!sidebarCollapsed && (
-          <div className="p-3 shrink-0">
-            <Button asChild className="w-full gap-2 shadow-sm font-medium" size="sm">
-              <NavLink to="/generate">
-                <PlusCircle className="h-4 w-4" />
+        <div className="p-3 shrink-0 flex justify-center">
+          <Button
+            asChild
+            className={cn(
+              'shadow-sm font-medium transition-all duration-300 ease-in-out overflow-hidden',
+              sidebarCollapsed
+                ? 'w-10 h-10 p-0 rounded-lg justify-center mx-auto'
+                : 'w-full h-9 px-3 justify-center gap-2'
+            )}
+            size="sm"
+          >
+            <NavLink
+              to="/generate"
+              title={sidebarCollapsed ? 'Tailor Resume' : undefined}
+              className="flex items-center justify-center w-full h-full"
+            >
+              <PlusCircle className="h-4 w-4 shrink-0" />
+              <span
+                className={cn(
+                  'transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden',
+                  sidebarCollapsed
+                    ? 'max-w-0 opacity-0 pointer-events-none'
+                    : 'max-w-[120px] opacity-100 ml-2'
+                )}
+              >
                 Tailor Resume
-              </NavLink>
-            </Button>
-          </div>
-        )}
+              </span>
+            </NavLink>
+          </Button>
+        </div>
 
-        <div className="border-t border-border p-3 shrink-0">
+        <div className="border-t border-border p-3 shrink-0 flex justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
                 type="button"
                 className={cn(
-                  'flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-muted cursor-pointer',
-                  sidebarCollapsed && 'justify-center p-1'
+                  'flex items-center rounded-lg text-left transition-all duration-200 hover:bg-muted cursor-pointer overflow-hidden',
+                  sidebarCollapsed
+                    ? 'w-10 h-10 mx-auto justify-center p-0'
+                    : 'w-full p-1.5 gap-3'
                 )}
               >
-                <Avatar className="h-8 w-8 border border-border">
+                <Avatar className="h-8 w-8 shrink-0 border border-border">
                   <AvatarImage src={profile?.avatarUrl} />
                   <AvatarFallback>{userInitials}</AvatarFallback>
                 </Avatar>
-                {!sidebarCollapsed && (
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-semibold text-foreground">{userDisplayName}</p>
-                    <p className="truncate text-[10px] text-muted-foreground">{user?.email}</p>
-                  </div>
-                )}
+                <div
+                  className={cn(
+                    'min-w-0 flex-1 transition-all duration-300 ease-in-out overflow-hidden',
+                    sidebarCollapsed
+                      ? 'max-w-0 opacity-0 -translate-x-2 pointer-events-none'
+                      : 'max-w-[160px] opacity-100 translate-x-0'
+                  )}
+                >
+                  <p className="truncate text-xs font-semibold text-foreground whitespace-nowrap">{userDisplayName}</p>
+                  <p className="truncate text-[10px] text-muted-foreground whitespace-nowrap">{user?.email}</p>
+                </div>
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
