@@ -48,6 +48,9 @@ const ReviewPage = lazy(() => import('@/pages/ReviewPage'))
 const PdfPreviewPage = lazy(() => import('@/pages/PdfPreviewPage'))
 const HistoryPage = lazy(() => import('@/pages/HistoryPage'))
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'))
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'))
+const TermsPage = lazy(() => import('@/pages/TermsPage'))
+const HelpPage = lazy(() => import('@/pages/HelpPage'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 export const router = createBrowserRouter([
@@ -62,6 +65,18 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: withSuspense(LandingPage),
+      },
+      {
+        path: '/privacy',
+        element: withSuspense(PrivacyPage),
+      },
+      {
+        path: '/terms',
+        element: withSuspense(TermsPage),
+      },
+      {
+        path: '/help',
+        element: withSuspense(HelpPage),
       },
     ],
   },

@@ -3,17 +3,19 @@ import { Link, Outlet } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
-import { Sparkles, ArrowRight, Menu, X, ShieldCheck } from 'lucide-react'
+import { useAuthStore } from '@/store/authStore'
+import { Sparkles, ArrowRight, Menu, X, ShieldCheck, LayoutDashboard } from 'lucide-react'
 
 export function MarketingLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const user = useAuthStore((s) => s.user)
 
   const navLinks = [
-    { label: 'Features', href: '#features' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Templates', href: '#templates' },
-    { label: 'ATS Scorer', href: '#ats-scorer' },
-    { label: 'FAQ', href: '#faq' },
+    { label: 'Features', href: '/#features', isInternal: false },
+    { label: 'How It Works', href: '/#how-it-works', isInternal: false },
+    { label: 'Templates', href: '/#templates', isInternal: false },
+    { label: 'ATS Scorer', href: '/#ats-scorer', isInternal: false },
+    { label: 'Help & FAQ', href: '/help', isInternal: true },
   ]
 
   return (
@@ -51,29 +53,50 @@ export function MarketingLayout() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.isInternal ? (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="transition-colors hover:text-foreground"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </nav>
 
           {/* Actions */}
           <div className="hidden sm:flex items-center gap-3">
             <ThemeToggle />
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/login">Sign In</Link>
-            </Button>
-            <Button size="sm" asChild className="gap-1.5 shadow-sm">
-              <Link to="/register">
-                Get Started
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </Button>
+            {user ? (
+              <Button size="sm" asChild className="gap-1.5 shadow-sm">
+                <Link to="/dashboard">
+                  <LayoutDashboard className="h-4 w-4" />
+                  Go to Dashboard
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/login">Sign In</Link>
+                </Button>
+                <Button size="sm" asChild className="gap-1.5 shadow-sm">
+                  <Link to="/register">
+                    Get Started
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,29 +117,51 @@ export function MarketingLayout() {
         {mobileMenuOpen && (
           <div className="border-b border-border bg-background/95 px-4 pt-2 pb-6 backdrop-blur-lg sm:hidden">
             <nav className="flex flex-col space-y-3 pt-2 pb-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) =>
+                link.isInternal ? (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-md px-3 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+                  >
+                    {link.label}
+                  </a>
+                )
+              )}
             </nav>
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
-              <Button variant="outline" asChild className="w-full justify-center">
-                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                  Sign In
-                </Link>
-              </Button>
-              <Button asChild className="w-full justify-center gap-1.5">
-                <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
-                  Get Started Free
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+              {user ? (
+                <Button asChild className="w-full justify-center gap-1.5">
+                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                    <LayoutDashboard className="h-4 w-4" />
+                    Go to Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" asChild className="w-full justify-center">
+                    <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                      Sign In
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full justify-center gap-1.5">
+                    <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
+                      Get Started Free
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         )}
@@ -154,11 +199,11 @@ export function MarketingLayout() {
             <div className="space-y-3">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">Product</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#features" className="hover:text-foreground transition-colors">Features</a></li>
-                <li><a href="#how-it-works" className="hover:text-foreground transition-colors">How It Works</a></li>
-                <li><a href="#templates" className="hover:text-foreground transition-colors">LaTeX Templates</a></li>
-                <li><a href="#ats-scorer" className="hover:text-foreground transition-colors">ATS Scoring Engine</a></li>
-                <li><Link to="/login" className="hover:text-foreground transition-colors">Live Demo</Link></li>
+                <li><a href="/#features" className="hover:text-foreground transition-colors">Features</a></li>
+                <li><a href="/#how-it-works" className="hover:text-foreground transition-colors">How It Works</a></li>
+                <li><a href="/#templates" className="hover:text-foreground transition-colors">LaTeX Templates</a></li>
+                <li><a href="/#ats-scorer" className="hover:text-foreground transition-colors">ATS Scoring Engine</a></li>
+                <li><Link to="/help" className="hover:text-foreground transition-colors">Help & FAQ</Link></li>
               </ul>
             </div>
 
@@ -166,11 +211,11 @@ export function MarketingLayout() {
             <div className="space-y-3">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">Templates</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#templates" className="hover:text-foreground transition-colors">Software Engineer Modern</a></li>
-                <li><a href="#templates" className="hover:text-foreground transition-colors">Minimal Academic</a></li>
-                <li><a href="#templates" className="hover:text-foreground transition-colors">Executive Clean</a></li>
-                <li><a href="#templates" className="hover:text-foreground transition-colors">Single-Column Standard</a></li>
-                <li><a href="#templates" className="hover:text-foreground transition-colors">Overleaf Integration</a></li>
+                <li><a href="/#templates" className="hover:text-foreground transition-colors">Software Engineer Modern</a></li>
+                <li><a href="/#templates" className="hover:text-foreground transition-colors">Minimal Academic</a></li>
+                <li><a href="/#templates" className="hover:text-foreground transition-colors">Executive Clean</a></li>
+                <li><a href="/#templates" className="hover:text-foreground transition-colors">Single-Column Standard</a></li>
+                <li><Link to="/help" className="hover:text-foreground transition-colors">Overleaf Integration Guide</Link></li>
               </ul>
             </div>
 
@@ -178,11 +223,11 @@ export function MarketingLayout() {
             <div className="space-y-3">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">Trust & Legal</h4>
               <ul className="space-y-2 text-xs">
-                <li><a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Security Architecture</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Data Retention</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">System Status</a></li>
+                <li><Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link></li>
+                <li><Link to="/help" className="hover:text-foreground transition-colors">Help Center & Docs</Link></li>
+                <li><Link to="/privacy#security" className="hover:text-foreground transition-colors">Security Architecture</Link></li>
+                <li><Link to="/privacy#retention" className="hover:text-foreground transition-colors">Data Retention</Link></li>
               </ul>
             </div>
           </div>

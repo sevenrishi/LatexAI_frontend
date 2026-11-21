@@ -26,6 +26,7 @@ import {
   ChevronLeft,
   LogOut,
   PlusCircle,
+  HelpCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -335,6 +336,10 @@ export function AppLayout() {
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/help')}>
+                <HelpCircle className="mr-2 h-4 w-4" />
+                Help & Documentation
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:text-destructive">
                 <LogOut className="mr-2 h-4 w-4" />
@@ -363,6 +368,15 @@ export function AppLayout() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate('/help')}
+              className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <HelpCircle className="h-4 w-4" />
+              <span>Help</span>
+            </Button>
             <ThemeToggle />
           </div>
         </header>

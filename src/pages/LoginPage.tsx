@@ -293,7 +293,7 @@ export function LoginPage() {
         </form>
       </CardContent>
 
-      <CardFooter className="flex flex-col space-y-2 text-center text-xs text-muted-foreground">
+      <CardFooter className="flex flex-col space-y-3 text-center text-xs text-muted-foreground">
         <div>
           Don&apos;t have an account?{' '}
           <Link to="/register" className="font-semibold text-primary hover:underline">
@@ -303,6 +303,16 @@ export function LoginPage() {
         <Link to="/forgot-password" className="hover:underline text-muted-foreground">
           Forgot your password?
         </Link>
+        <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground flex items-center justify-center gap-1.5">
+          <span>By signing in, you agree to our</span>
+          <Link to="/terms" className="font-medium text-foreground underline hover:text-primary">
+            Terms
+          </Link>
+          <span>&</span>
+          <Link to="/privacy" className="font-medium text-foreground underline hover:text-primary">
+            Privacy
+          </Link>
+        </div>
       </CardFooter>
     </Card>
   )

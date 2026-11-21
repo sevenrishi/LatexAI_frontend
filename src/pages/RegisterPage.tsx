@@ -358,13 +358,13 @@ export function RegisterPage() {
             />
             <label htmlFor="terms" className="text-xs text-muted-foreground leading-snug cursor-pointer select-none">
               I agree to the{' '}
-              <a href="#" className="font-medium text-foreground underline hover:text-primary">
+              <Link to="/terms" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground underline hover:text-primary">
                 Terms of Service
-              </a>{' '}
+              </Link>{' '}
               and{' '}
-              <a href="#" className="font-medium text-foreground underline hover:text-primary">
+              <Link to="/privacy" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground underline hover:text-primary">
                 Privacy Policy
-              </a>
+              </Link>
               .
             </label>
           </div>
