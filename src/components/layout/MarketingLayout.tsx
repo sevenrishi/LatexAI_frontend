@@ -171,23 +171,33 @@ export function MarketingLayout() {
       <footer className="border-t border-border bg-card/60 py-16 text-sm text-muted-foreground">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
-            {/* Col 1: Brand Info */}
-            <div className="md:col-span-2 space-y-4">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
-                  <Sparkles className="h-4 w-4" />
+            {/* Col 1: High-Impact Brand Showcase with Animated Grid Texture */}
+            <div className="md:col-span-2 relative flex flex-col justify-start">
+              {/* Organic Seamless Background Grid Texture */}
+              <div className="pointer-events-none absolute -inset-6 -z-10 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,white_30%,transparent_75%)]">
+                <svg className="h-full w-full stroke-primary/20 dark:stroke-primary/25" aria-hidden="true">
+                  <defs>
+                    <pattern id="footer-ambient-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                      <path d="M 24 0 L 0 0 0 24" fill="none" strokeWidth="0.8" />
+                      <circle cx="24" cy="0" r="1.2" className="fill-primary/40 animate-pulse" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#footer-ambient-grid)" />
+                </svg>
+              </div>
+
+              {/* Large Iconic Brand Unit using the Same Sparkles Logo */}
+              <Link
+                to="/"
+                className="group inline-flex items-center gap-3.5 text-foreground transition-all duration-300 hover:opacity-95"
+              >
+                <div className="relative flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25 border border-primary-foreground/20 transition-transform duration-300 group-hover:scale-105">
+                  <Sparkles className="h-7 w-7 sm:h-8 sm:w-8" />
                 </div>
-                <span className="text-xl font-black tracking-tight text-foreground">
-                  Latex<span className="text-primary">AI</span>
+                <span className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight select-none">
+                  Latex<span className="text-primary font-black">AI</span>
                 </span>
-              </div>
-              <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
-                The zero-hallucination AI resume compiler. Pair verified career profiles with job descriptions to produce deterministic ATS matches and publication-grade LaTeX resumes.
-              </p>
-              <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-medium text-foreground">All systems operational</span>
-              </div>
+              </Link>
             </div>
 
             {/* Col 2: Product */}
