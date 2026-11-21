@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
-  Sparkles,
   ArrowRight,
   CheckCircle2,
   FileCode2,
@@ -96,11 +95,6 @@ export function LandingPage() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--color-primary)/15%,transparent_60%)]" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
-            <Badge variant="secondary" className="mb-6 gap-1.5 py-1 px-3 text-xs font-medium">
-              <Sparkles className="h-3.5 w-3.5 text-primary" />
-              Deterministic ATS Engine • Zero-Hallucination pdflatex
-            </Badge>
-
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
               Tailor Your Resume with AI.{' '}
               <span className="text-primary bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">

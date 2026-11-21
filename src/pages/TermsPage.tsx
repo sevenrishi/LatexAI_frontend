@@ -14,7 +14,6 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 
 const SECTIONS = [
   { id: 'summary', title: '1. Summary in Plain English' },
@@ -91,11 +90,6 @@ export function TermsPage() {
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-primary/5 via-card to-background py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center space-y-4">
-            <Badge variant="outline" className="px-3 py-1 text-xs font-semibold gap-1.5 border-primary/30 text-primary bg-primary/5">
-              <Scale className="h-3.5 w-3.5" />
-              LatexAI Terms of Service
-            </Badge>
-
             <h1 className="text-3xl font-extrabold tracking-tight sm:text-5xl text-foreground">
               Terms & Conditions
             </h1>
