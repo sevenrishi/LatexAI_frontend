@@ -312,7 +312,7 @@ export function ReviewPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Panel (5 columns on LG): Tabbed Controls (ATS Score / AI Changes / Manual Edit) */}
         <div
-          className={`lg:col-span-5 space-y-4 ${
+          className={`lg:col-span-5 space-y-4 lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto pr-1 ${
             mobileView === 'pdf' ? 'hidden lg:block' : 'block'
           }`}
           data-testid="left-review-panel"

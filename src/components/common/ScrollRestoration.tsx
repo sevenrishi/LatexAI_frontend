@@ -10,6 +10,14 @@ export function ScrollRestoration() {
       left: 0,
       behavior: 'instant',
     })
+    const mainEl = document.getElementById('main-content')
+    if (mainEl) {
+      mainEl.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant',
+      })
+    }
   }, [pathname, search])
 
   return null

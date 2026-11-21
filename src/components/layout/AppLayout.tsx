@@ -84,7 +84,7 @@ export function AppLayout() {
     .toUpperCase() || 'U'
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex h-screen overflow-hidden bg-background text-foreground">
       {/* Skip to Main Content Link for A11y (FE-7.02) */}
       <a
         href="#main-content"
@@ -172,14 +172,14 @@ export function AppLayout() {
         </div>
       </div>
 
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar (Fixed Left Panel) */}
       <aside
         className={cn(
-          'hidden border-r border-border bg-card transition-all duration-300 md:flex md:flex-col',
+          'hidden border-r border-border bg-card transition-all duration-300 md:flex md:flex-col h-screen sticky top-0 shrink-0 z-20',
           sidebarCollapsed ? 'w-18' : 'w-64'
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-border px-4">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
           <div className="flex items-center gap-2.5 overflow-hidden">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
               <Sparkles className="h-5 w-5" />
@@ -201,7 +201,7 @@ export function AppLayout() {
           </Button>
         </div>
 
-        <nav className="flex-1 space-y-1.5 p-3">
+        <nav className="flex-1 space-y-1.5 p-3 overflow-y-auto">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon
             return (
@@ -228,7 +228,7 @@ export function AppLayout() {
         </nav>
 
         {!sidebarCollapsed && (
-          <div className="p-3">
+          <div className="p-3 shrink-0">
             <Button asChild className="w-full gap-2 shadow-sm font-medium" size="sm">
               <NavLink to="/generate">
                 <PlusCircle className="h-4 w-4" />
@@ -238,7 +238,7 @@ export function AppLayout() {
           </div>
         )}
 
-        <div className="border-t border-border p-3">
+        <div className="border-t border-border p-3 shrink-0">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button
@@ -287,10 +287,10 @@ export function AppLayout() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex flex-1 flex-col min-w-0 h-screen overflow-hidden">
         <NetworkBanner />
         {/* Top Navbar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-md sm:px-6">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
