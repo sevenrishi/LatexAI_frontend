@@ -4,10 +4,17 @@ import { ApiError } from './api'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
-    onError: (error) => {
+    onError: (error, query) => {
+      if (query?.meta?.suppressToast) {
+        return
+      }
       const apiErr = error instanceof ApiError ? error : null
       // Skip toast for 401 or 404 (handled by route guards / not found UI)
       if (apiErr && (apiErr.status === 401 || apiErr.status === 404)) {
+        return
+      }
+      // Do not toast prematurely if retries are still in progress
+      if (query.state.fetchFailureCount < 2) {
         return
       }
       toast.error(apiErr?.friendlyMessage || error.message || 'Something went wrong')

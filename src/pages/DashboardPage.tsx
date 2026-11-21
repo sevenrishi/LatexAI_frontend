@@ -38,12 +38,14 @@ export function DashboardPage() {
     queryKey: ['dashboard-summary'],
     queryFn: dashboardApi.getSummary,
     staleTime: 30000,
+    meta: { suppressToast: true },
   })
 
   const { data: fullProfile } = useQuery({
     queryKey: ['user-profile-full'],
     queryFn: profileApi.getProfile,
     staleTime: 30000,
+    meta: { suppressToast: true },
   })
 
   // Dynamic greeting based on current local hour

@@ -110,7 +110,23 @@ export async function request<T>(
       headers: reqHeaders,
     })
   } catch (err) {
-    if (
+    // Retry once for GET requests to absorb cold starts / socket drops
+    let retryRes: Response | null = null
+    if (!isRetry && (!rest.method || rest.method.toUpperCase() === 'GET')) {
+      try {
+        await new Promise((r) => setTimeout(r, 1200))
+        retryRes = await fetch(url, {
+          ...rest,
+          headers: reqHeaders,
+        })
+      } catch {
+        retryRes = null
+      }
+    }
+
+    if (retryRes) {
+      res = retryRes
+    } else if (
       !isRetry &&
       typeof window !== 'undefined' &&
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') &&
