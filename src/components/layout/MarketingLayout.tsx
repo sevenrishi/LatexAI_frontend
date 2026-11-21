@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { useAuthStore } from '@/store/authStore'
-import { Sparkles, ArrowRight, Menu, X, ShieldCheck, LayoutDashboard } from 'lucide-react'
+import { Sparkles, ArrowRight, Menu, X, LayoutDashboard } from 'lucide-react'
 
 export function MarketingLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -35,20 +35,15 @@ export function MarketingLayout() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="flex items-center gap-2.5 font-bold tracking-tight text-foreground transition-opacity hover:opacity-90"
+            className="flex items-center gap-2.5 text-foreground transition-opacity hover:opacity-90"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-              <Sparkles className="h-5 w-5" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
+              <Sparkles className="h-4.5 w-4.5" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-lg leading-tight font-extrabold tracking-tight">
-                Latex<span className="text-primary">AI</span>
-              </span>
-              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                ATS Resume Engine
-              </span>
-            </div>
+            <span className="text-xl font-black tracking-tight">
+              Latex<span className="text-primary">AI</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -178,20 +173,20 @@ export function MarketingLayout() {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
             {/* Col 1: Brand Info */}
             <div className="md:col-span-2 space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
                   <Sparkles className="h-4 w-4" />
                 </div>
-                <span className="text-xl font-extrabold tracking-tight text-foreground">
+                <span className="text-xl font-black tracking-tight text-foreground">
                   Latex<span className="text-primary">AI</span>
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground max-w-sm">
+              <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
                 The zero-hallucination AI resume compiler. Pair verified career profiles with job descriptions to produce deterministic ATS matches and publication-grade LaTeX resumes.
               </p>
-              <div className="flex items-center gap-2 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                <ShieldCheck className="h-4 w-4" />
-                <span>Strict verification • No AI hallucinated facts</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-3 py-1 text-xs text-muted-foreground">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="font-medium text-foreground">All systems operational</span>
               </div>
             </div>
 
@@ -233,13 +228,11 @@ export function MarketingLayout() {
           </div>
 
           <div className="mt-12 pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-            <p>© {new Date().getFullYear()} LatexAI Inc. Engineered for precision and ATS compliance.</p>
-            <div className="flex items-center gap-4">
-              <span>Powered by pdflatex</span>
-              <span>•</span>
-              <span>Supabase Auth</span>
-              <span>•</span>
-              <span>Zero Hallucinations</span>
+            <p>© {new Date().getFullYear()} LatexAI Inc. All rights reserved.</p>
+            <div className="flex items-center gap-6">
+              <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+              <Link to="/help" className="hover:text-foreground transition-colors">Help Center</Link>
             </div>
           </div>
         </div>
