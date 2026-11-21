@@ -24,7 +24,6 @@ import {
   Menu,
   X,
   ChevronLeft,
-  ChevronRight,
   LogOut,
   PlusCircle,
 } from 'lucide-react'
@@ -267,34 +266,28 @@ export function AppLayout() {
         </nav>
 
         <div className="p-3 shrink-0 flex justify-center">
-          <Button
-            asChild
+          <NavLink
+            to="/generate"
+            title={sidebarCollapsed ? 'Tailor Resume' : undefined}
             className={cn(
-              'shadow-sm font-medium transition-all duration-300 ease-in-out overflow-hidden',
+              'flex items-center bg-primary text-primary-foreground shadow-sm font-semibold text-sm transition-all duration-200 overflow-hidden hover:bg-primary/90 cursor-pointer rounded-lg',
               sidebarCollapsed
-                ? 'w-10 h-10 p-0 rounded-lg justify-center mx-auto'
-                : 'w-full h-9 px-3 justify-center gap-2'
+                ? 'w-10 h-10 justify-center p-0 mx-auto'
+                : 'w-full h-10 px-4 justify-center gap-2.5'
             )}
-            size="sm"
           >
-            <NavLink
-              to="/generate"
-              title={sidebarCollapsed ? 'Tailor Resume' : undefined}
-              className="flex items-center justify-center w-full h-full"
+            <PlusCircle className="h-5 w-5 shrink-0" />
+            <span
+              className={cn(
+                'transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden',
+                sidebarCollapsed
+                  ? 'max-w-0 opacity-0 pointer-events-none'
+                  : 'max-w-[160px] opacity-100 ml-2'
+              )}
             >
-              <PlusCircle className="h-4 w-4 shrink-0" />
-              <span
-                className={cn(
-                  'transition-all duration-300 ease-in-out whitespace-nowrap overflow-hidden',
-                  sidebarCollapsed
-                    ? 'max-w-0 opacity-0 pointer-events-none'
-                    : 'max-w-[120px] opacity-100 ml-2'
-                )}
-              >
-                Tailor Resume
-              </span>
-            </NavLink>
-          </Button>
+              Tailor Resume
+            </span>
+          </NavLink>
         </div>
 
         <div className="border-t border-border p-3 shrink-0 flex justify-center">
