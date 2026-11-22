@@ -97,7 +97,7 @@ export function LandingPage() {
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl">
               Tailor Your Resume with AI.{' '}
-              <span className="text-primary bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">
+              <span className="text-primary bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
                 Compiled into Flawless LaTeX.
               </span>
             </h1>

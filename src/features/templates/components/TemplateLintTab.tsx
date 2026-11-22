@@ -38,7 +38,7 @@ export function TemplateLintTab({ latexSource, onJumpToLine }: TemplateLintTabPr
       case 'warning':
         return <AlertTriangle className="h-4 w-4 text-amber-500" />
       case 'info':
-        return <Info className="h-4 w-4 text-blue-500" />
+        return <Info className="h-4 w-4 text-amber-500" />
     }
   }
 
@@ -59,7 +59,7 @@ export function TemplateLintTab({ latexSource, onJumpToLine }: TemplateLintTabPr
         return (
           <Badge
             variant="outline"
-            className="text-[10px] uppercase bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
+            className="text-[10px] uppercase bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30"
           >
             Info
           </Badge>

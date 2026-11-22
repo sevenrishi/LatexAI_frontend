@@ -38,8 +38,8 @@ export function ResetPasswordPage() {
 
   const strengthColor = useMemo(() => {
     if (strengthScore <= 1) return 'bg-destructive'
-    if (strengthScore === 2) return 'bg-amber-500'
-    if (strengthScore === 3) return 'bg-blue-500'
+    if (strengthScore === 2) return 'bg-orange-400'
+    if (strengthScore === 3) return 'bg-amber-500'
     return 'bg-emerald-500'
   }, [strengthScore])
 

@@ -186,18 +186,18 @@ export function ActionableErrorCard({
       <div
         role="alert"
         aria-live="assertive"
-        className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-4 text-sky-950 dark:text-sky-200 shadow-xs animate-in fade-in slide-in-from-top-2 duration-200"
+        className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-950 dark:text-amber-200 shadow-xs animate-in fade-in slide-in-from-top-2 duration-200"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <div className="rounded-lg bg-sky-500/20 p-2 text-sky-600 dark:text-sky-400 mt-0.5">
+            <div className="rounded-lg bg-amber-500/20 p-2 text-amber-600 dark:text-amber-400 mt-0.5">
               <ShieldAlert className="h-5 w-5" />
             </div>
             <div className="space-y-1">
-              <h4 className="text-sm font-bold text-sky-900 dark:text-sky-100">
+              <h4 className="text-sm font-bold text-amber-900 dark:text-amber-100">
                 Switched to Text Paste Mode
               </h4>
-              <p className="text-xs text-sky-800 dark:text-sky-300 leading-relaxed max-w-xl">
+              <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed max-w-xl">
                 {message ||
                   'The job board prevented automated scraping. We have automatically switched you to the "Paste text" tab so you can paste the description directly.'}
               </p>
@@ -207,7 +207,7 @@ export function ActionableErrorCard({
             <button
               onClick={onDismiss}
               aria-label="Dismiss notification"
-              className="text-sky-700/60 hover:text-sky-900 dark:text-sky-300/60 dark:hover:text-sky-100 transition-colors"
+              className="text-amber-700/60 hover:text-amber-900 dark:text-amber-300/60 dark:hover:text-amber-100 transition-colors"
             >
               <X className="h-4 w-4" />
             </button>

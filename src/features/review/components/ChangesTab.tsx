@@ -165,7 +165,7 @@ export function ChangesTab({ changesData, className = '' }: ChangesTabProps) {
         )
       case 'metric_quantified':
         return (
-          <Badge variant="outline" className="text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30 gap-1 font-medium">
+          <Badge variant="outline" className="text-[11px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30 gap-1 font-medium">
             <TrendingUp className="h-3 w-3" /> Metric Quantified
           </Badge>
         )
@@ -209,7 +209,7 @@ export function ChangesTab({ changesData, className = '' }: ChangesTabProps) {
 
         <div className="p-3.5 rounded-xl bg-card border border-border/70 shadow-xs space-y-1">
           <span className="text-muted-foreground text-[11px] block">Metrics Highlighted</span>
-          <span className="font-mono text-xl font-bold text-blue-600 dark:text-blue-400">
+          <span className="font-mono text-xl font-bold text-amber-600 dark:text-amber-400">
             {data.stats.metricsBoosted}
           </span>
           <span className="text-[10px] text-muted-foreground">Quantified outcomes</span>

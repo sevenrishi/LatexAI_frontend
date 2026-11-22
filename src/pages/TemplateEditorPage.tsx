@@ -208,7 +208,7 @@ export function TemplateEditorPage() {
               {template.isDefault ? (
                 <Badge
                   variant="outline"
-                  className="text-[10px] bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30 gap-1"
+                  className="text-[10px] bg-primary/10 text-primary border-primary/30 gap-1"
                 >
                   <Shield className="h-3 w-3" /> System Default
                 </Badge>

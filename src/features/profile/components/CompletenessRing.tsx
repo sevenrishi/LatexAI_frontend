@@ -23,14 +23,14 @@ export function CompletenessRing({ completeness, onSelectSection }: Completeness
     },
     good: {
       label: 'Good Progress',
-      badgeClass: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30',
-      strokeColor: '#3b82f6',
+      badgeClass: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
+      strokeColor: '#ECB12D',
       description: 'Add a few more sections to unlock peak tailoring accuracy.',
     },
     needs_work: {
       label: 'Incomplete',
-      badgeClass: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30',
-      strokeColor: '#f59e0b',
+      badgeClass: 'bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/30',
+      strokeColor: '#f97316',
       description: 'Fill in your experience and core skills to build your first tailored resume.',
     },
   }[tier]

@@ -156,7 +156,7 @@ export function PrivacyPage() {
 
             <Card className="border-border/60 bg-card shadow-xs">
               <CardContent className="p-5 space-y-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
                   <Lock className="h-5 w-5" />
                 </div>
                 <h3 className="font-semibold text-sm text-foreground">TLS 1.3 & AES-256</h3>
