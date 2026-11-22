@@ -4,6 +4,10 @@ import type { ResumeHistoryItem } from '@/features/history/types'
 
 let historyList = [...mockGenerations]
 
+export function resetHistoryList() {
+  historyList = [...mockGenerations]
+}
+
 export const resumeHandlers = [
   // GET /resumes (cursor pagination, search, status, minScore filters)
   http.get('*/api/v1/resumes', ({ request }) => {

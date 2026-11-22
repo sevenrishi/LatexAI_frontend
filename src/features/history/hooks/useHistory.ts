@@ -1,7 +1,22 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { historyApi } from '../api/historyApi'
 import type { HistoryFilterParams } from '../types'
 import { toast } from 'sonner'
+
+export function useInfiniteHistoryResumes(params: Omit<HistoryFilterParams, 'cursor'>) {
+  return useInfiniteQuery({
+    queryKey: ['resumesHistory', params],
+    queryFn: ({ pageParam }) =>
+      historyApi.getResumes({
+        ...params,
+        cursor: pageParam ?? undefined,
+        limit: params.limit || 5,
+      }),
+    initialPageParam: null as string | null,
+    getNextPageParam: (lastPage) => (lastPage.hasMore ? lastPage.nextCursor : undefined),
+    staleTime: 30 * 1000,
+  })
+}
 
 export function useHistoryResumes(params: HistoryFilterParams) {
   return useQuery({

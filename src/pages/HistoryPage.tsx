@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, RefreshCw, AlertCircle, Loader2 } from 'lucide-react'
+import { Plus, RefreshCw, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardTitle, CardDescription } from '@/components/ui/card'
 import {
-  useHistoryResumes,
+  useInfiniteHistoryResumes,
   useDeleteResume,
   useRetryResume,
 } from '@/features/history/hooks/useHistory'
@@ -19,22 +19,28 @@ export function HistoryPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('ALL')
   const [scoreRange, setScoreRange] = useState('ALL')
-  const [cursor, setCursor] = useState<string | null>(null)
 
   // Derived query parameters
   const minScore =
     scoreRange === 'HIGH' ? 90 : scoreRange === 'MEDIUM' ? 80 : undefined
 
-  const filterParams: HistoryFilterParams = {
+  const filterParams: Omit<HistoryFilterParams, 'cursor'> = {
     search: search.trim() || undefined,
     status: status !== 'ALL' ? status : undefined,
     minScore,
-    cursor,
     limit: 5,
   }
 
-  // Fetch query
-  const { data, isLoading, isFetching, isError, refetch } = useHistoryResumes(filterParams)
+  // Fetch infinite query (page-by-page accumulation)
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    refetch,
+  } = useInfiniteHistoryResumes(filterParams)
   const deleteMutation = useDeleteResume()
   const retryMutation = useRetryResume()
 
@@ -43,7 +49,6 @@ export function HistoryPage() {
     setSearch('')
     setStatus('ALL')
     setScoreRange('ALL')
-    setCursor(null)
   }
 
   const handleDeleteItem = async (id: string) => {
@@ -55,13 +60,14 @@ export function HistoryPage() {
   }
 
   const handleLoadMore = () => {
-    if (data?.nextCursor) {
-      setCursor(data.nextCursor)
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
     }
   }
 
   const hasFilters = Boolean(search || status !== 'ALL' || scoreRange !== 'ALL')
-  const items = data?.items || []
+  const items = data?.pages.flatMap((page) => page.items) ?? []
+  const totalCount = data?.pages[0]?.totalCount ?? items.length
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in duration-300" data-testid="history-page">
@@ -89,18 +95,9 @@ export function HistoryPage() {
         search={search}
         status={status}
         scoreRange={scoreRange}
-        onSearchChange={(val) => {
-          setSearch(val)
-          setCursor(null)
-        }}
-        onStatusChange={(val) => {
-          setStatus(val)
-          setCursor(null)
-        }}
-        onScoreRangeChange={(val) => {
-          setScoreRange(val)
-          setCursor(null)
-        }}
+        onSearchChange={(val) => setSearch(val)}
+        onStatusChange={(val) => setStatus(val)}
+        onScoreRangeChange={(val) => setScoreRange(val)}
         onClearFilters={handleClearFilters}
       />
 
@@ -152,18 +149,8 @@ export function HistoryPage() {
           <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
             <span>
               Showing <strong className="text-foreground">{items.length}</strong> of{' '}
-              <strong className="text-foreground">{data?.totalCount ?? items.length}</strong> applications
+              <strong className="text-foreground">{totalCount}</strong> applications
             </span>
-            {cursor && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCursor(null)}
-                className="h-6 text-xs text-primary px-1 hover:underline"
-              >
-                Back to First Page
-              </Button>
-            )}
           </div>
 
           <div className="space-y-3" data-testid="history-items-list">
@@ -177,18 +164,18 @@ export function HistoryPage() {
             ))}
           </div>
 
-          {/* Cursor Pagination: Load More */}
-          {data?.hasMore && (
+          {/* Pagination: Load More or Finished Message */}
+          {hasNextPage ? (
             <div className="flex justify-center pt-4" data-testid="history-pagination">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleLoadMore}
-                disabled={isFetching}
-                className="text-xs gap-2 min-w-36 shadow-xs font-medium"
+                disabled={isFetchingNextPage}
+                className="text-xs gap-2 min-w-36 shadow-xs font-medium cursor-pointer"
                 data-testid="load-more-btn"
               >
-                {isFetching ? (
+                {isFetchingNextPage ? (
                   <>
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     <span>Loading...</span>
@@ -197,6 +184,18 @@ export function HistoryPage() {
                   <span>Load More Resumes</span>
                 )}
               </Button>
+            </div>
+          ) : (
+            <div
+              className="flex items-center justify-center pt-6 pb-2 text-center text-xs text-muted-foreground gap-2 animate-in fade-in duration-300"
+              data-testid="history-finish-message"
+            >
+              <div className="h-px w-12 bg-border/80" />
+              <span className="flex items-center gap-1.5 font-medium text-muted-foreground">
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+                You're all caught up
+              </span>
+              <div className="h-px w-12 bg-border/80" />
             </div>
           )}
         </div>

@@ -415,6 +415,38 @@ describe('Phase J — Review, Download, History, and Settings', () => {
         expect(screen.queryByTestId('history-item-gen_ats_low')).not.toBeInTheDocument()
       })
     })
+
+    it('loads 5 more resumes when Load More Resumes button is clicked and shows finish message when all are loaded', async () => {
+      const user = userEvent.setup()
+      renderWithClient(<HistoryPage />, '/history')
+
+      await waitFor(() => {
+        expect(screen.getByTestId('history-items-list')).toBeInTheDocument()
+      })
+
+      // Initially renders 5 items
+      const initialItems = screen.getAllByTestId(/^history-item-/)
+      expect(initialItems.length).toBe(5)
+
+      // "Load More Resumes" button is present
+      const loadMoreBtn = screen.getByTestId('load-more-btn')
+      expect(loadMoreBtn).toBeInTheDocument()
+      expect(loadMoreBtn).toHaveTextContent('Load More Resumes')
+
+      // Click "Load More Resumes"
+      await user.click(loadMoreBtn)
+
+      // Should now load more items (all 6 items in mock)
+      await waitFor(() => {
+        const updatedItems = screen.getAllByTestId(/^history-item-/)
+        expect(updatedItems.length).toBe(6)
+      })
+
+      // When no other resume is present, the button should be removed and finish message displayed
+      expect(screen.queryByTestId('load-more-btn')).not.toBeInTheDocument()
+      expect(screen.getByTestId('history-finish-message')).toBeInTheDocument()
+      expect(screen.getByText(/You're all caught up/i)).toBeInTheDocument()
+    })
   })
 
   describe('FE-5.08: W-22 Settings Views', () => {
