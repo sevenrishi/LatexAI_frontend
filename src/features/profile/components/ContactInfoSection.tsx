@@ -134,7 +134,7 @@ export function ContactInfoSection({ profile, onDirtyChange }: ContactInfoSectio
                 id="fullName"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="e.g. John Doe"
+                placeholder="e.g. Alex Rivera"
               />
             </FormField>
 

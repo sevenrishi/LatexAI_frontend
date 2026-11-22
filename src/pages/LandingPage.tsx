@@ -91,7 +91,7 @@ export function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-16 lg:py-28">
+      <section className="relative overflow-hidden py-16 lg:py-20">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--color-primary)/15%,transparent_60%)]" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
@@ -358,9 +358,7 @@ export function LandingPage() {
       <section id="how-it-works" className="py-20 bg-muted/20 border-t border-border/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 max-w-2xl mx-auto">
-            <Badge variant="outline" className="mb-3">
-              Workflow
-            </Badge>
+
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               From Job Posting to Ready PDF in 3 Steps
             </h2>
@@ -419,9 +417,7 @@ export function LandingPage() {
       <section id="templates" className="py-20 lg:py-28 bg-background border-t border-border/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14 max-w-2xl mx-auto">
-            <Badge variant="outline" className="mb-3">
-              Curated LaTeX Styles
-            </Badge>
+
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
               Single-Column, ATS-Compliant Templates
             </h2>
@@ -434,9 +430,8 @@ export function LandingPage() {
             {templates.map((tpl) => (
               <Card
                 key={tpl.id}
-                className={`cursor-pointer transition-all border-2 ${
-                  selectedTemplate === tpl.id ? 'border-primary shadow-md' : 'border-border/60 hover:border-border'
-                }`}
+                className={`cursor-pointer transition-all border-2 ${selectedTemplate === tpl.id ? 'border-primary shadow-md' : 'border-border/60 hover:border-border'
+                  }`}
                 onClick={() => setSelectedTemplate(tpl.id)}
               >
                 <CardHeader>
@@ -579,9 +574,8 @@ export function LandingPage() {
                   >
                     <span>{faq.q}</span>
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 text-primary' : ''
-                      }`}
+                      className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? 'rotate-180 text-primary' : ''
+                        }`}
                     />
                   </button>
                   {isOpen && (

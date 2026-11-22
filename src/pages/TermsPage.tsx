@@ -173,11 +173,10 @@ export function TermsPage() {
                 key={sec.id}
                 type="button"
                 onClick={() => scrollTo(sec.id)}
-                className={`w-full text-left rounded-md px-2.5 py-1.5 text-xs transition-colors ${
-                  activeSection === sec.id
+                className={`w-full text-left rounded-md px-2.5 py-1.5 text-xs transition-colors ${activeSection === sec.id
                     ? 'bg-primary text-primary-foreground font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
+                  }`}
               >
                 {sec.title}
               </button>
@@ -231,11 +230,10 @@ export function TermsPage() {
                       key={sec.id}
                       type="button"
                       onClick={() => scrollTo(sec.id)}
-                      className={`w-full text-left rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                        activeSection === sec.id
+                      className={`w-full text-left rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer ${activeSection === sec.id
                           ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
                           : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                      }`}
+                        }`}
                     >
                       {sec.title}
                     </button>

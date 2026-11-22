@@ -256,7 +256,7 @@ export function RegisterPage() {
           <FormField label="Full Name" id="name" required>
             <Input
               id="name"
-              placeholder="e.g. John Doe"
+              placeholder="e.g. Alex Rivera"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               disabled={isLoading}
@@ -309,9 +309,8 @@ export function RegisterPage() {
                   {[1, 2, 3, 4].map((level) => (
                     <div
                       key={level}
-                      className={`h-full flex-1 rounded-full transition-all duration-300 ${
-                        level <= strengthScore ? strengthColor : 'bg-transparent'
-                      }`}
+                      className={`h-full flex-1 rounded-full transition-all duration-300 ${level <= strengthScore ? strengthColor : 'bg-transparent'
+                        }`}
                     />
                   ))}
                 </div>

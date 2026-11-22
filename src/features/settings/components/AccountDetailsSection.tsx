@@ -103,7 +103,7 @@ export function AccountDetailsSection() {
               id="fullName"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="e.g. John Doe"
+              placeholder="e.g. Alex Rivera"
               className="text-xs h-9"
               data-testid="input-full-name"
             />
