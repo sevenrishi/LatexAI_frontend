@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
 import { supabase } from '@/lib/supabase'
@@ -29,6 +29,7 @@ import {
   HelpCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
 
 const NAV_ITEMS = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -109,12 +110,14 @@ export function AppLayout() {
         )}
       >
         <div className="flex items-center justify-between pb-4 border-b border-border">
-          <div className="flex items-center gap-2 font-bold">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Sparkles className="h-4 w-4" />
-            </div>
-            <span className="text-lg font-extrabold tracking-tight">Latex<span className="text-primary">AI</span></span>
-          </div>
+          <Link
+            to="/dashboard"
+            className="flex items-center transition-opacity hover:opacity-90"
+            onClick={() => setMobileMenuOpen(false)}
+            title="Kolomly"
+          >
+            <KolomlyLogo width={130} height={49} />
+          </Link>
           <Button
             variant="ghost"
             size="icon"
@@ -185,28 +188,27 @@ export function AppLayout() {
             sidebarCollapsed ? 'justify-center px-0' : 'px-4 justify-between'
           )}
         >
-          <div
-            className={cn(
-              'flex items-center gap-2.5 min-w-0 transition-opacity duration-200',
-              sidebarCollapsed ? 'cursor-pointer hover:opacity-80 justify-center' : ''
-            )}
-            onClick={sidebarCollapsed ? toggleSidebar : undefined}
-            title={sidebarCollapsed ? 'Expand sidebar' : undefined}
-          >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <span
-              className={cn(
-                'text-lg font-extrabold tracking-tight whitespace-nowrap transition-all duration-300 ease-in-out overflow-hidden',
-                sidebarCollapsed
-                  ? 'max-w-0 opacity-0 -translate-x-2 pointer-events-none'
-                  : 'max-w-[140px] opacity-100 translate-x-0'
-              )}
+          {/* While collapsed: show only the big K icon (no square box/border) */}
+          {sidebarCollapsed ? (
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              className="flex items-center justify-center cursor-pointer hover:opacity-85 hover:scale-105 transition-all duration-200 p-1 focus:outline-hidden"
+              title="Expand sidebar"
+              aria-label="Expand sidebar"
             >
-              Latex<span className="text-primary">AI</span>
-            </span>
-          </div>
+              <KolomlyIcon height={48} />
+            </button>
+          ) : (
+            /* While expanded: show only the full Kolomly logo */
+            <Link
+              to="/dashboard"
+              className="flex items-center transition-opacity hover:opacity-90"
+              title="Kolomly"
+            >
+              <KolomlyLogo width={138} height={52} className="block" />
+            </Link>
+          )}
 
           <Button
             variant={sidebarCollapsed ? 'outline' : 'ghost'}

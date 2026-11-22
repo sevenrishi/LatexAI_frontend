@@ -2,6 +2,7 @@ import { Link, Outlet } from 'react-router-dom'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { Sparkles, ShieldCheck } from 'lucide-react'
+import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
 
 export function AuthLayout() {
   return (
@@ -10,10 +11,8 @@ export function AuthLayout() {
       {/* Top Header */}
       <header className="flex h-16 items-center justify-between px-6 sm:px-10 z-10">
         <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="text-lg font-extrabold tracking-tight">Latex<span className="text-primary">AI</span></span>
+
+          <KolomlyLogo width={120} height={45} />
         </Link>
         <ThemeToggle />
       </header>

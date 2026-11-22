@@ -5,6 +5,7 @@ import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { useAuthStore } from '@/store/authStore'
 import { Sparkles, ArrowRight, Menu, X, LayoutDashboard } from 'lucide-react'
+import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
 
 export function MarketingLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -38,12 +39,8 @@ export function MarketingLayout() {
             className="flex items-center gap-2.5 text-foreground transition-opacity hover:opacity-90"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-xs">
-              <Sparkles className="h-4.5 w-4.5" />
-            </div>
-            <span className="text-xl font-black tracking-tight">
-              Latex<span className="text-primary">AI</span>
-            </span>
+
+            <KolomlyLogo width={120} height={45} className="block" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -186,17 +183,13 @@ export function MarketingLayout() {
                 </svg>
               </div>
 
-              {/* Large Iconic Brand Unit using the Same Sparkles Logo */}
+              {/* Large Iconic Brand Unit using Kolomly Logo */}
               <Link
                 to="/"
                 className="group inline-flex items-center gap-3.5 text-foreground transition-all duration-300 hover:opacity-95"
               >
-                <div className="relative flex h-14 w-14 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25 border border-primary-foreground/20 transition-transform duration-300 group-hover:scale-105">
-                  <Sparkles className="h-7 w-7 sm:h-8 sm:w-8" />
-                </div>
-                <span className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight select-none">
-                  Latex<span className="text-primary font-black">AI</span>
-                </span>
+
+                <KolomlyLogo width={160} height={60} />
               </Link>
             </div>
 

@@ -3,6 +3,7 @@ import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { Button } from '@/components/ui/button'
 import { Sparkles, X } from 'lucide-react'
+import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
 
 export function WizardLayout() {
   return (
@@ -10,11 +11,8 @@ export function WizardLayout() {
       <NetworkBanner />
       {/* Wizard Header */}
       <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-border/50 bg-background/80 px-6 backdrop-blur-md">
-        <Link to="/dashboard" className="flex items-center gap-2 font-bold tracking-tight">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="text-base font-extrabold tracking-tight">Latex<span className="text-primary">AI</span></span>
+        <Link to="/dashboard" className="flex items-center gap-2.5 font-bold tracking-tight">
+          <KolomlyLogo width={110} height={41} />
           <span className="ml-2 rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">Setup Wizard</span>
         </Link>
 
