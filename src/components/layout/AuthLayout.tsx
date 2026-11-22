@@ -1,8 +1,8 @@
 import { Link, Outlet } from 'react-router-dom'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
-import { Sparkles, ShieldCheck } from 'lucide-react'
-import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
+import { ShieldCheck } from 'lucide-react'
+import { KolomlyLogo } from '@/components/brand'
 
 export function AuthLayout() {
   return (

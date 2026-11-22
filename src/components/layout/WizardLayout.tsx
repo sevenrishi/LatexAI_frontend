@@ -2,8 +2,8 @@ import { Link, Outlet } from 'react-router-dom'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { Button } from '@/components/ui/button'
-import { Sparkles, X } from 'lucide-react'
-import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
+import { X } from 'lucide-react'
+import { KolomlyLogo } from '@/components/brand'
 
 export function WizardLayout() {
   return (

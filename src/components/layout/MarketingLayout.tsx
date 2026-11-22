@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/common/ThemeToggle'
 import { NetworkBanner } from '@/components/common/NetworkBanner'
 import { useAuthStore } from '@/store/authStore'
-import { Sparkles, ArrowRight, Menu, X, LayoutDashboard } from 'lucide-react'
-import { KolomlyIcon, KolomlyLogo } from '@/components/brand'
+import { ArrowRight, Menu, X, LayoutDashboard } from 'lucide-react'
+import { KolomlyLogo } from '@/components/brand'
 
 export function MarketingLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
