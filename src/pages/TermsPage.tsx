@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input'
 const SECTIONS = [
   { id: 'summary', title: '1. Summary in Plain English' },
   { id: 'acceptance', title: '2. Acceptance of Terms & Eligibility' },
-  { id: 'service', title: '3. Description of LatexAI Service' },
+  { id: 'service', title: '3. Description of Kolomly Service' },
   { id: 'ip-ownership', title: '4. Intellectual Property & Ownership Rights' },
   { id: 'acceptable-use', title: '5. Acceptable Use Policy & TeX Security' },
   { id: 'ai-disclaimer', title: '6. AI Output & User Verification Responsibility' },
@@ -145,7 +145,7 @@ export function TermsPage() {
               </div>
               <div>
                 <strong className="text-foreground block mb-1">4. No Hiring Promises</strong>
-                LatexAI prepares superior ATS resumes, but cannot legally guarantee job offers or interviews.
+                Kolomly prepares superior ATS resumes, but cannot legally guarantee job offers or interviews.
               </div>
             </div>
           </div>
@@ -174,8 +174,8 @@ export function TermsPage() {
                 type="button"
                 onClick={() => scrollTo(sec.id)}
                 className={`w-full text-left rounded-md px-2.5 py-1.5 text-xs transition-colors ${activeSection === sec.id
-                    ? 'bg-primary text-primary-foreground font-semibold'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-primary text-primary-foreground font-semibold'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   }`}
               >
                 {sec.title}
@@ -231,8 +231,8 @@ export function TermsPage() {
                       type="button"
                       onClick={() => scrollTo(sec.id)}
                       className={`w-full text-left rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer ${activeSection === sec.id
-                          ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                         }`}
                     >
                       {sec.title}
@@ -263,7 +263,7 @@ export function TermsPage() {
                 <span className="text-primary font-mono text-base">01.</span> Summary in Plain English
               </h2>
               <p>
-                These Terms of Service (&ldquo;Terms&rdquo;) form a legally binding contract between you (&ldquo;User&rdquo;, &ldquo;you&rdquo;, or &ldquo;your&rdquo;) and LatexAI Inc. (&ldquo;LatexAI&rdquo;, &ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). They govern your access to and use of the LatexAI web application, APIs, LaTeX compilation servers, templates, and resume intelligence tools.
+                These Terms of Service (&ldquo;Terms&rdquo;) form a legally binding contract between you (&ldquo;User&rdquo;, &ldquo;you&rdquo;, or &ldquo;your&rdquo;) and Kolomly Inc. (&ldquo;Kolomly&rdquo;, &ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;). They govern your access to and use of the Kolomly web application, APIs, LaTeX compilation servers, templates, and resume intelligence tools.
               </p>
               <p>
                 By creating an account, clicking &ldquo;Get Started&rdquo;, or accessing any portion of our platform, you signify that you have read, understood, and agree to be bound by these Terms and our Privacy Policy. If you do not agree, do not access or use the Service.
@@ -276,7 +276,7 @@ export function TermsPage() {
                 <span className="text-primary font-mono text-base">02.</span> Acceptance of Terms & Eligibility
               </h2>
               <p>
-                To use LatexAI, you must be at least sixteen (16) years of age or the age of legal majority in your jurisdiction. By registering, you warrant that:
+                To use Kolomly, you must be at least sixteen (16) years of age or the age of legal majority in your jurisdiction. By registering, you warrant that:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li>You possess the legal capacity to enter into a binding agreement.</li>
@@ -289,10 +289,10 @@ export function TermsPage() {
             {/* Section 3 */}
             <article id="service" className="space-y-4 scroll-mt-24 border-b border-border pb-8">
               <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl flex items-center gap-2">
-                <span className="text-primary font-mono text-base">03.</span> Description of LatexAI Service
+                <span className="text-primary font-mono text-base">03.</span> Description of Kolomly Service
               </h2>
               <p>
-                LatexAI provides a specialized suite of career engineering software tools, including:
+                Kolomly provides a specialized suite of career engineering software tools, including:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Profile Knowledge Base:</strong> A structured, centralized database to curate your work experiences, projects, education, skills, and metrics.</li>
@@ -312,21 +312,21 @@ export function TermsPage() {
                 <div className="rounded-lg border border-border bg-card p-4 space-y-2">
                   <h4 className="font-semibold text-foreground">Your Content (100% User Ownership)</h4>
                   <p className="text-xs text-muted-foreground">
-                    You retain complete, exclusive copyright, ownership, and all intellectual property rights to your personal career data, uploaded resumes, generated content, and compiled PDF outputs. LatexAI asserts zero ownership claims over your career documents.
+                    You retain complete, exclusive copyright, ownership, and all intellectual property rights to your personal career data, uploaded resumes, generated content, and compiled PDF outputs. Kolomly asserts zero ownership claims over your career documents.
                   </p>
                 </div>
 
                 <div className="rounded-lg border border-border bg-card p-4 space-y-2">
                   <h4 className="font-semibold text-foreground">Limited Service License</h4>
                   <p className="text-xs text-muted-foreground">
-                    You grant LatexAI a strictly limited, non-exclusive, worldwide license solely to store, process, reformat, and compile your data to provide the Service to you. This license terminates automatically when you remove content or delete your account.
+                    You grant Kolomly a strictly limited, non-exclusive, worldwide license solely to store, process, reformat, and compile your data to provide the Service to you. This license terminates automatically when you remove content or delete your account.
                   </p>
                 </div>
 
                 <div className="rounded-lg border border-border bg-card p-4 space-y-2">
-                  <h4 className="font-semibold text-foreground">LatexAI Platform IP</h4>
+                  <h4 className="font-semibold text-foreground">Kolomly Platform IP</h4>
                   <p className="text-xs text-muted-foreground">
-                    LatexAI and its licensors retain all rights, title, and interest in and to the platform codebase, LaTeX template designs, UI styling, ATS scoring algorithms, logos, and trademarks. You may not reverse engineer, decompile, or scrape the platform.
+                    Kolomly and its licensors retain all rights, title, and interest in and to the platform codebase, LaTeX template designs, UI styling, ATS scoring algorithms, logos, and trademarks. You may not reverse engineer, decompile, or scrape the platform.
                   </p>
                 </div>
               </div>
@@ -366,7 +366,7 @@ export function TermsPage() {
                   Mandatory User Review Obligation
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  While LatexAI implements strict anti-hallucination guardrails and anchors all generated text to your Profile Knowledge Base, artificial intelligence can produce nuanced variations, rewordings, or formatting discrepancies.
+                  While Kolomly implements strict anti-hallucination guardrails and anchors all generated text to your Profile Knowledge Base, artificial intelligence can produce nuanced variations, rewordings, or formatting discrepancies.
                 </p>
               </div>
 
@@ -374,7 +374,7 @@ export function TermsPage() {
                 <strong>You are solely responsible for inspecting and verifying all statements, numbers, metrics, dates, and claims on your compiled resume prior to sending it to any prospective employer or third party.</strong>
               </p>
               <p>
-                LatexAI disclaims any liability for employment disputes, rescinded offers, or misrepresentation allegations arising from the use of AI-assisted resume content.
+                Kolomly disclaims any liability for employment disputes, rescinded offers, or misrepresentation allegations arising from the use of AI-assisted resume content.
               </p>
             </article>
 
@@ -384,10 +384,10 @@ export function TermsPage() {
                 <span className="text-primary font-mono text-base">07.</span> Employment Disclaimer (No Hiring Guarantees)
               </h2>
               <p>
-                LatexAI provides typesetting and resume structuring software. We do not operate as an employment agency, headhunter, or staffing service.
+                Kolomly provides typesetting and resume structuring software. We do not operate as an employment agency, headhunter, or staffing service.
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
-                <li>We make no warranties, representations, or guarantees that using LatexAI will result in job interviews, recruiter callbacks, employment offers, or salary increases.</li>
+                <li>We make no warranties, representations, or guarantees that using Kolomly will result in job interviews, recruiter callbacks, employment offers, or salary increases.</li>
                 <li>ATS scores generated on our platform are algorithmic estimates intended to guide resume optimization; different employers configure their commercial ATS parsers (Workday, Greenhouse, Lever, etc.) according to proprietary, varying criteria.</li>
               </ul>
             </article>
@@ -413,7 +413,7 @@ export function TermsPage() {
                 <span className="text-primary font-mono text-base">09.</span> Subscriptions, Invoicing & Refunds
               </h2>
               <p>
-                LatexAI offers both free tier access and premium Pro subscriptions:
+                Kolomly offers both free tier access and premium Pro subscriptions:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Billing Cycles:</strong> Paid plans are billed in advance on a recurring monthly or annual basis. You may cancel at any time through your Account Settings.</li>
@@ -431,13 +431,13 @@ export function TermsPage() {
                 To the maximum extent permitted by applicable law:
               </p>
               <p>
-                LatexAI Inc., its directors, employees, and suppliers shall not be liable for any indirect, incidental, consequential, special, or punitive damages, including loss of profits, employment opportunities, data loss, or business interruption.
+                Kolomly Inc., its directors, employees, and suppliers shall not be liable for any indirect, incidental, consequential, special, or punitive damages, including loss of profits, employment opportunities, data loss, or business interruption.
               </p>
               <p>
-                In no event shall our cumulative aggregate liability exceed the total amount paid by you to LatexAI in the twelve (12) months preceding the incident, or fifty US dollars ($50.00), whichever is greater.
+                In no event shall our cumulative aggregate liability exceed the total amount paid by you to Kolomly in the twelve (12) months preceding the incident, or fifty US dollars ($50.00), whichever is greater.
               </p>
               <p>
-                You agree to defend, indemnify, and hold harmless LatexAI against any third-party claims, liabilities, damages, and expenses (including legal fees) arising from your breach of these Terms or the content of resumes you distribute.
+                You agree to defend, indemnify, and hold harmless Kolomly against any third-party claims, liabilities, damages, and expenses (including legal fees) arising from your breach of these Terms or the content of resumes you distribute.
               </p>
             </article>
 
@@ -450,7 +450,7 @@ export function TermsPage() {
                 You may terminate your account at any time via <Link to="/settings" className="text-primary underline">Settings &gt; Danger Zone</Link>. Upon deletion, your career knowledge base and resume history will be permanently erased.
               </p>
               <p>
-                LatexAI reserves the right to suspend or terminate access immediately, without prior notice, if you breach these Terms, compromise platform security, or engage in abusive behavior.
+                Kolomly reserves the right to suspend or terminate access immediately, without prior notice, if you breach these Terms, compromise platform security, or engage in abusive behavior.
               </p>
             </article>
 
@@ -481,13 +481,13 @@ export function TermsPage() {
                     <Scale className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">LatexAI Legal Department</h4>
+                    <h4 className="font-semibold text-foreground">Kolomly Legal Department</h4>
                     <p className="text-xs text-muted-foreground">Inquiries answered by legal counsel</p>
                   </div>
                 </div>
                 <div className="pt-2 text-xs space-y-1 text-muted-foreground">
                   <p><strong>Email:</strong> <a href="mailto:latexai.legal@sevenrishi.tech" className="text-primary hover:underline">latexai.legal@sevenrishi.tech</a></p>
-                  <p><strong>Physical Mail:</strong> LatexAI Inc., Attn: Legal Counsel, 548 Market St, Suite 78100, San Francisco, CA 94104</p>
+                  <p><strong>Physical Mail:</strong> Kolomly Inc., Attn: Legal Counsel, 548 Market St, Suite 78100, San Francisco, CA 94104</p>
                 </div>
               </div>
             </article>

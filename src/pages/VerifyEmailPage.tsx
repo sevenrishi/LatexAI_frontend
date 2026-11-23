@@ -23,7 +23,7 @@ export function VerifyEmailPage() {
   // Advance to onboarding or dashboard once email is confirmed
   const handleVerified = useCallback(
     async (confirmedUser: typeof user) => {
-      toast.success('Email confirmed successfully! Welcome to LatexAI.')
+      toast.success('Email confirmed successfully! Welcome to Kolomly.')
       if (session && confirmedUser) {
         setSession(session, confirmedUser)
       }

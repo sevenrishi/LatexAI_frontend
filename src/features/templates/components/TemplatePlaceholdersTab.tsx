@@ -62,7 +62,7 @@ export function TemplatePlaceholdersTab({
             )}
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Standard placeholders allow the LatexAI AI pipeline and profile renderer to inject structured content.
+            Standard placeholders allow the Kolomly AI pipeline and profile renderer to inject structured content.
           </p>
         </div>
 
@@ -92,13 +92,12 @@ export function TemplatePlaceholdersTab({
           return (
             <div
               key={ph.id}
-              className={`p-3.5 rounded-lg border transition-all ${
-                isPresent
+              className={`p-3.5 rounded-lg border transition-all ${isPresent
                   ? 'bg-card border-border/80'
                   : ph.required
-                  ? 'bg-destructive/5 border-destructive/20'
-                  : 'bg-card/50 border-border/50'
-              }`}
+                    ? 'bg-destructive/5 border-destructive/20'
+                    : 'bg-card/50 border-border/50'
+                }`}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="space-y-1">
@@ -128,11 +127,10 @@ export function TemplatePlaceholdersTab({
                   ) : (
                     <Badge
                       variant="outline"
-                      className={`text-[10px] gap-1 py-0.5 ${
-                        ph.required
+                      className={`text-[10px] gap-1 py-0.5 ${ph.required
                           ? 'bg-destructive/10 text-destructive border-destructive/30'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       <AlertCircle className="h-3 w-3" /> Missing
                     </Badge>

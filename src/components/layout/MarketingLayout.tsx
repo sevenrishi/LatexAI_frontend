@@ -231,7 +231,7 @@ export function MarketingLayout() {
           </div>
 
           <div className="mt-12 pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-            <p>© {new Date().getFullYear()} LatexAI Inc. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Kolomly Inc. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>

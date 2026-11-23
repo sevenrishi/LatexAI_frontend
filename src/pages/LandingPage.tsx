@@ -71,8 +71,8 @@ export function LandingPage() {
       a: 'Standard word processors generate complex layout tables, hidden text boxes, and erratic kerning that trip up ATS parsers like Workday and Greenhouse. Pure pdflatex outputs mathematically precise single-column text hierarchies with flawless character encoding that ATS parsers extract with 99.8% fidelity.',
     },
     {
-      q: 'How does LatexAI guarantee zero hallucination?',
-      a: 'Unlike generic chatbots that make up past companies or embellish metrics, LatexAI strictly grounds every generated bullet in your verified profile. We run an automated traceability verification pass: if an AI-generated bullet cannot be directly traced to a verified fact in your profile, it is rejected and safely reverted.',
+      q: 'How does Kolomly guarantee zero hallucination?',
+      a: 'Unlike generic chatbots that make up past companies or embellish metrics, Kolomly strictly grounds every generated bullet in your verified profile. We run an automated traceability verification pass: if an AI-generated bullet cannot be directly traced to a verified fact in your profile, it is rejected and safely reverted.',
     },
     {
       q: 'Do I need to know LaTeX syntax to use this platform?',
@@ -103,7 +103,7 @@ export function LandingPage() {
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground leading-relaxed">
-              LatexAI grounds every tailored resume strictly in your verified career history. No invented roles, no fake metrics — just mathematically perfect LaTeX that beats every ATS filter.
+              Kolomly grounds every tailored resume strictly in your verified career history. No invented roles, no fake metrics — just mathematically perfect LaTeX that beats every ATS filter.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -389,7 +389,7 @@ export function LandingPage() {
               </div>
               <h3 className="font-bold text-lg mb-2">Paste Job Description</h3>
               <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                Paste the text or URL of the job you want. LatexAI parses key requirements, seniority keywords, and required technical credentials.
+                Paste the text or URL of the job you want. Kolomly parses key requirements, seniority keywords, and required technical credentials.
               </p>
               <div className="mt-4 pt-3 border-t border-border/50 text-xs font-semibold text-primary">
                 Automated extraction →
@@ -479,7 +479,7 @@ export function LandingPage() {
               Why Generic Resumes Fail ATS Checks
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Compare a typical graphic resume with LatexAI's structured single-column pdflatex output.
+              Compare a typical graphic resume with Kolomly's structured single-column pdflatex output.
             </p>
           </div>
 
@@ -514,11 +514,11 @@ export function LandingPage() {
               </ul>
             </div>
 
-            {/* The LatexAI Way */}
+            {/* The Kolomly Way */}
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3">
                 <span className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 text-sm">
-                  <Check className="h-4 w-4" /> LatexAI Pure pdflatex
+                  <Check className="h-4 w-4" /> Kolomly Pure pdflatex
                 </span>
                 <Badge variant="success" className="text-xs">
                   98% ATS Score

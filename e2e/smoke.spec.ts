@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('LatexAI App Smoke Tests', () => {
+test.describe('Kolomly App Smoke Tests', () => {
   test('loads landing page successfully', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/LatexAI/)
+    await expect(page).toHaveTitle(/Kolomly/)
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
     await expect(page.getByRole('link', { name: /Start Tailoring Free/i })).toBeVisible()
   })

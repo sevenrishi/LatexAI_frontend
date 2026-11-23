@@ -39,9 +39,9 @@ const FAQS: FAQItem[] = [
   {
     id: 'zero-hallucination',
     category: 'ai',
-    question: 'How does LatexAI guarantee zero AI hallucinations?',
+    question: 'How does Kolomly guarantee zero AI hallucinations?',
     answer:
-      'Unlike generic chatbots that make up past jobs or fake metrics when prompted, LatexAI uses strict fact-anchoring. All resume tailoring draws exclusively from verified entries stored in your Profile Knowledge Base. If a target job description requires Kubernetes experience and it does not exist in your Profile KB, LatexAI will highlight it as an ATS missing skill rather than fabricating a false work history.',
+      'Unlike generic chatbots that make up past jobs or fake metrics when prompted, Kolomly uses strict fact-anchoring. All resume tailoring draws exclusively from verified entries stored in your Profile Knowledge Base. If a target job description requires Kubernetes experience and it does not exist in your Profile KB, Kolomly will highlight it as an ATS missing skill rather than fabricating a false work history.',
     tags: ['ai', 'hallucination', 'profile', 'trust', 'accuracy'],
   },
   {
@@ -95,7 +95,7 @@ const FAQS: FAQItem[] = [
   {
     id: 'import-existing-resume',
     category: 'getting-started',
-    question: 'How do I import my existing resume into LatexAI?',
+    question: 'How do I import my existing resume into Kolomly?',
     answer:
       'During Onboarding or inside the Profile KB page (/profile), you can click "Import Resume (PDF/Word)". Our parser extracts your work history, education, and skills into structured editable cards. You can review and verify each fact before generating tailored resumes.',
     tags: ['import', 'pdf', 'word', 'profile', 'onboarding', 'upload'],
@@ -243,7 +243,7 @@ export function HelpPage() {
           </h1>
 
           <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground">
-            Search our guides, learn how to tailor resumes with zero hallucinations, 
+            Search our guides, learn how to tailor resumes with zero hallucinations,
             or fix LaTeX compilation syntax in seconds.
           </p>
 
@@ -283,11 +283,10 @@ export function HelpPage() {
                 key={tag}
                 type="button"
                 onClick={() => handlePopularSearch(tag)}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
-                  searchQuery.toLowerCase() === tag.toLowerCase()
+                className={`rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${searchQuery.toLowerCase() === tag.toLowerCase()
                     ? 'bg-primary text-primary-foreground shadow-xs'
                     : 'bg-muted/80 text-foreground hover:bg-primary/20 hover:text-primary'
-                }`}
+                  }`}
               >
                 {tag}
               </button>
@@ -311,20 +310,18 @@ export function HelpPage() {
                   onClick={() => {
                     setSelectedCategory(cat.id)
                   }}
-                  className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                    isSelected
+                  className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${isSelected
                       ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
-                  }`}
+                    }`}
                 >
                   <Icon className="h-4 w-4 shrink-0" />
                   <span>{cat.label}</span>
                   <span
-                    className={`ml-1 rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
-                      isSelected
+                    className={`ml-1 rounded-full px-1.5 py-0.2 text-[10px] font-mono ${isSelected
                         ? 'bg-primary-foreground/20 text-primary-foreground'
                         : 'bg-background/80 text-muted-foreground'
-                    }`}
+                      }`}
                   >
                     {count}
                   </span>
@@ -345,7 +342,7 @@ export function HelpPage() {
                 Core Guides & Workflows
               </h2>
               <p className="text-sm text-muted-foreground">
-                Step-by-step guides to master the LatexAI platform
+                Step-by-step guides to master the Kolomly platform
               </p>
             </div>
             {user ? (
@@ -545,8 +542,8 @@ export function HelpPage() {
                 {searchQuery
                   ? `Showing results matching "${searchQuery}"`
                   : selectedCategory === 'all'
-                  ? 'All platform guides, troubleshooting, and optimization tips'
-                  : `Filtered by ${CATEGORIES.find((c) => c.id === selectedCategory)?.label}`}
+                    ? 'All platform guides, troubleshooting, and optimization tips'
+                    : `Filtered by ${CATEGORIES.find((c) => c.id === selectedCategory)?.label}`}
               </p>
             </div>
 
@@ -675,7 +672,7 @@ export function HelpPage() {
 
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild size="lg" className="gap-2 shadow-md">
-                <a href="mailto:latexai.support@sevenrishi.tech?subject=LatexAI%20Support%20Request">
+                <a href="mailto:latexai.support@sevenrishi.tech?subject=Kolomly%20Support%20Request">
                   <Mail className="h-4 w-4" />
                   Email Support (latexai.support@sevenrishi.tech)
                 </a>

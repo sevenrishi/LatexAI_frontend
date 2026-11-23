@@ -1,6 +1,6 @@
-# LatexAI Web Application
+# Kolomly Web Application
 
-The official web client for **LatexAI** — a modern, responsive web application that enables users to manage resume profiles, customize LaTeX templates, write and preview LaTeX documents in real-time, and run AI-powered ATS optimizations.
+The official web client for **Kolomly** — a modern, responsive web application that enables users to manage resume profiles, customize LaTeX templates, write and preview LaTeX documents in real-time, and run AI-powered ATS optimizations.
 
 ---
 
@@ -65,7 +65,7 @@ cp .env.example .env
 
 | Key | Description | Default / Example |
 | :--- | :--- | :--- |
-| `VITE_API_URL` | Base URL for the LatexAI backend API | `http://localhost:4000/api/v1` |
+| `VITE_API_URL` | Base URL for the Kolomly backend API | `http://localhost:4000/api/v1` |
 | `VITE_SUPABASE_URL` | Supabase project URL | `https://your-project.supabase.co` |
 | `VITE_SUPABASE_ANON_KEY` | Public anonymous Supabase key | `your-anon-key` |
 | `VITE_APP_URL` | Frontend application host URL | `http://localhost:5173` |

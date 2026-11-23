@@ -3,10 +3,10 @@ import { test, expect } from '@playwright/test'
 test.describe('E2E: Authentication & Navigation Flow', () => {
   test('landing page loads with navigation and hero CTA', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/LatexAI/)
+    await expect(page).toHaveTitle(/Kolomly/)
 
     // Check branding
-    await expect(page.locator('text=LatexAI').first()).toBeVisible()
+    await expect(page.locator('text=Kolomly').first()).toBeVisible()
 
     // Check main call to action
     const startBtn = page.getByRole('link', { name: /Start Tailoring Free/i }).first()

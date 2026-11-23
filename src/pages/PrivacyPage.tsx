@@ -101,7 +101,7 @@ export function PrivacyPage() {
             </h1>
 
             <p className="max-w-2xl text-base sm:text-lg text-muted-foreground">
-              We treat your career data with the highest standard of confidentiality. 
+              We treat your career data with the highest standard of confidentiality.
               Our zero-hallucination engine compiles your resume without training public AI models on your personal history.
             </p>
 
@@ -214,11 +214,10 @@ export function PrivacyPage() {
                 key={sec.id}
                 type="button"
                 onClick={() => scrollTo(sec.id)}
-                className={`w-full text-left rounded-md px-2.5 py-1.5 text-xs transition-colors ${
-                  activeSection === sec.id
+                className={`w-full text-left rounded-md px-2.5 py-1.5 text-xs transition-colors ${activeSection === sec.id
                     ? 'bg-primary text-primary-foreground font-semibold'
                     : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                }`}
+                  }`}
               >
                 {sec.title}
               </button>
@@ -272,11 +271,10 @@ export function PrivacyPage() {
                       key={sec.id}
                       type="button"
                       onClick={() => scrollTo(sec.id)}
-                      className={`w-full text-left rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                        activeSection === sec.id
+                      className={`w-full text-left rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer ${activeSection === sec.id
                           ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
                           : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                      }`}
+                        }`}
                     >
                       {sec.title}
                     </button>
@@ -306,7 +304,7 @@ export function PrivacyPage() {
                 <span className="text-primary font-mono text-base">01.</span> Executive Privacy Overview
               </h2>
               <p>
-                LatexAI Inc. (&ldquo;LatexAI&rdquo;, &ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) provides an intelligent, ATS-optimized LaTeX resume compilation platform designed to empower job applicants worldwide. Our foundational architecture is grounded in <strong>zero-hallucination deterministic generation</strong>: we assist you in tailoring, formatting, and rendering your verified professional accomplishments without embellishing, falsifying, or sharing your career trajectory with unauthorized third parties.
+                Kolomly Inc. (&ldquo;Kolomly&rdquo;, &ldquo;we&rdquo;, &ldquo;our&rdquo;, or &ldquo;us&rdquo;) provides an intelligent, ATS-optimized LaTeX resume compilation platform designed to empower job applicants worldwide. Our foundational architecture is grounded in <strong>zero-hallucination deterministic generation</strong>: we assist you in tailoring, formatting, and rendering your verified professional accomplishments without embellishing, falsifying, or sharing your career trajectory with unauthorized third parties.
               </p>
               <p>
                 This Privacy Policy explains what personal information we collect, why we collect it, how it is processed by our systems and artificial intelligence engines, and the stringent security safeguards we maintain under the EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act as amended by the CPRA (CCPA), and applicable global data protection frameworks.
@@ -329,7 +327,7 @@ export function PrivacyPage() {
                     A. Personal Account Credentials
                   </h4>
                   <p className="text-xs text-muted-foreground">
-                    When you register for LatexAI, we collect your full name, email address, hashed authentication credentials, and timestamps. If you authenticate via OAuth providers (such as Google or GitHub via Supabase Auth), we receive your primary email address and public avatar image as authorized by your provider consent.
+                    When you register for Kolomly, we collect your full name, email address, hashed authentication credentials, and timestamps. If you authenticate via OAuth providers (such as Google or GitHub via Supabase Auth), we receive your primary email address and public avatar image as authorized by your provider consent.
                   </p>
                 </div>
 
@@ -370,7 +368,7 @@ export function PrivacyPage() {
               <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl flex items-center gap-2">
                 <span className="text-primary font-mono text-base">03.</span> How We Use Your Information
               </h2>
-              <p>We process your data strictly to deliver and improve the LatexAI service:</p>
+              <p>We process your data strictly to deliver and improve the Kolomly service:</p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong className="text-foreground">Deterministic Resume Tailoring:</strong> Aligning verified achievements in your Profile Knowledge Base with keywords present in target job descriptions.</li>
                 <li><strong className="text-foreground">LaTeX Compilation & Rendering:</strong> Converting structured JSON career schemas into TeX syntax and compiling them via server-side <code className="rounded bg-muted px-1.5 py-0.5 text-xs text-foreground font-mono">pdflatex</code> into high-resolution, vector-crisp PDF documents.</li>
@@ -391,7 +389,7 @@ export function PrivacyPage() {
                   Our Irrevocable Zero-Training Guarantee
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  LatexAI contracts exclusively with enterprise AI model providers (including Google Cloud Vertex AI, OpenAI Enterprise, and Anthropic Claude via commercial APIs) whose agreements explicitly prohibit the use of customer API inputs for model training or public weights refinement.
+                  Kolomly contracts exclusively with enterprise AI model providers (including Google Cloud Vertex AI, OpenAI Enterprise, and Anthropic Claude via commercial APIs) whose agreements explicitly prohibit the use of customer API inputs for model training or public weights refinement.
                 </p>
               </div>
 
@@ -401,7 +399,7 @@ export function PrivacyPage() {
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li>Data is transmitted over encrypted TLS 1.3 tunnels solely for real-time inference.</li>
                 <li>Prompt payloads contain only the specific context required to generate the output (e.g. your raw bullet point and the target job description requirements).</li>
-                <li>Neither LatexAI nor our upstream API providers retain your career records for generative model training or algorithmic profiling.</li>
+                <li>Neither Kolomly nor our upstream API providers retain your career records for generative model training or algorithmic profiling.</li>
                 <li>Our prompts enforce <strong>strict fact-anchoring</strong>: the model is instructed never to fabricate employers, dates, metrics, or degrees not verified in your Profile KB.</li>
               </ul>
             </article>
@@ -452,7 +450,7 @@ export function PrivacyPage() {
                 <span className="text-primary font-mono text-base">07.</span> Your Rights (GDPR, CCPA & Global Laws)
               </h2>
               <p>
-                Regardless of your geographic location, LatexAI honors comprehensive personal privacy rights:
+                Regardless of your geographic location, Kolomly honors comprehensive personal privacy rights:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <div className="p-4 rounded-lg border border-border bg-card space-y-2">
@@ -476,7 +474,7 @@ export function PrivacyPage() {
                 <div className="p-4 rounded-lg border border-border bg-card space-y-2">
                   <h4 className="font-semibold text-xs uppercase tracking-wider text-primary">No Selling or Sharing of Data</h4>
                   <p className="text-xs text-muted-foreground">
-                    LatexAI does not sell, rent, monetize, or trade your personal or career data to advertisers, headhunters, or third-party data brokers.
+                    Kolomly does not sell, rent, monetize, or trade your personal or career data to advertisers, headhunters, or third-party data brokers.
                   </p>
                 </div>
               </div>
@@ -488,7 +486,7 @@ export function PrivacyPage() {
                 <span className="text-primary font-mono text-base">08.</span> Cookies & Local Browser Storage
               </h2>
               <p>
-                LatexAI does not deploy invasive cross-site advertising pixels or behavioral trackers. We use local storage and cookies strictly for functional operations:
+                Kolomly does not deploy invasive cross-site advertising pixels or behavioral trackers. We use local storage and cookies strictly for functional operations:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong className="text-foreground">Authentication Tokens:</strong> Secure HTTP-only session tokens provided by Supabase Auth to keep you securely signed in.</li>
@@ -560,7 +558,7 @@ export function PrivacyPage() {
                 <span className="text-primary font-mono text-base">11.</span> Children’s Privacy
               </h2>
               <p>
-                LatexAI is an employment application preparation tool intended for working professionals and university students. The service is not directed to individuals under the age of 16. We do not knowingly collect personal information from children under 16. If we become aware of an account registered by a child under 16, we will immediately terminate the account and purge all associated records.
+                Kolomly is an employment application preparation tool intended for working professionals and university students. The service is not directed to individuals under the age of 16. We do not knowingly collect personal information from children under 16. If we become aware of an account registered by a child under 16, we will immediately terminate the account and purge all associated records.
               </p>
             </article>
 
@@ -588,14 +586,14 @@ export function PrivacyPage() {
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-foreground">LatexAI Privacy & Legal Office</h4>
+                    <h4 className="font-semibold text-foreground">Kolomly Privacy & Legal Office</h4>
                     <p className="text-xs text-muted-foreground">Dedicated response within 48 business hours</p>
                   </div>
                 </div>
                 <div className="pt-2 text-xs space-y-1 text-muted-foreground">
                   <p><strong>Email:</strong> <a href="mailto:latexai.privacy@sevenrishi.tech" className="text-primary hover:underline">latexai.privacy@sevenrishi.tech</a></p>
                   <p><strong>Security Inquiries:</strong> <a href="mailto:latexai.security@sevenrishi.tech" className="text-primary hover:underline">latexai.security@sevenrishi.tech</a></p>
-                  <p><strong>Address:</strong> LatexAI Inc., 548 Market St, Suite 78100, San Francisco, CA 94104</p>
+                  <p><strong>Address:</strong> Kolomly Inc., 548 Market St, Suite 78100, San Francisco, CA 94104</p>
                 </div>
               </div>
             </article>

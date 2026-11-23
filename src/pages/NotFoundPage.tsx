@@ -15,7 +15,7 @@ export function NotFoundPage() {
         Page does not exist
       </h1>
       <p className="mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
-        The page you are looking for may have been moved, deleted, or does not exist in the LatexAI system.
+        The page you are looking for may have been moved, deleted, or does not exist in the Kolomly system.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

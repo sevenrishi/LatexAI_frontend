@@ -296,7 +296,7 @@ export function OnboardingPage() {
       }
 
       setOnboardingCompleted(true)
-      toast.success('🎉 Welcome to LatexAI! Your profile is configured.')
+      toast.success('🎉 Welcome to Kolomly! Your profile is configured.')
       navigate('/dashboard', { replace: true })
     } catch {
       toast.error('Failed to complete onboarding sync. Redirecting to dashboard...')
@@ -374,22 +374,20 @@ export function OnboardingPage() {
                 key={title}
                 type="button"
                 onClick={() => setStep(stepNum)}
-                className={`flex flex-col items-center gap-1 rounded-lg p-1.5 transition-colors text-left sm:text-center ${
-                  isActive
+                className={`flex flex-col items-center gap-1 rounded-lg p-1.5 transition-colors text-left sm:text-center ${isActive
                     ? 'text-primary font-bold'
                     : isCompleted
-                    ? 'text-foreground font-medium'
-                    : 'text-muted-foreground'
-                }`}
+                      ? 'text-foreground font-medium'
+                      : 'text-muted-foreground'
+                  }`}
               >
                 <div
-                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs ${
-                    isCompleted
+                  className={`flex h-6 w-6 items-center justify-center rounded-full text-xs ${isCompleted
                       ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/30'
                       : isActive
-                      ? 'bg-primary text-primary-foreground font-bold'
-                      : 'bg-muted text-muted-foreground'
-                  }`}
+                        ? 'bg-primary text-primary-foreground font-bold'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
                 >
                   {isCompleted ? <Check className="h-3.5 w-3.5" /> : stepNum}
                 </div>
@@ -494,7 +492,7 @@ export function OnboardingPage() {
             </div>
             <CardTitle className="text-2xl font-bold tracking-tight">Import your verified experience</CardTitle>
             <CardDescription>
-              LatexAI never hallucinates past jobs. We tailor resumes strictly from your source profile.
+              Kolomly never hallucinates past jobs. We tailor resumes strictly from your source profile.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -503,11 +501,10 @@ export function OnboardingPage() {
               <button
                 type="button"
                 onClick={() => setImportMode('upload')}
-                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${
-                  importMode === 'upload'
+                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${importMode === 'upload'
                     ? 'border-primary bg-primary/5 text-foreground ring-1 ring-primary'
                     : 'border-border/60 hover:bg-muted/50 text-muted-foreground'
-                }`}
+                  }`}
               >
                 <Upload className="h-5 w-5 text-primary mb-1" />
                 <span className="text-xs font-bold text-foreground">Upload Resume</span>
@@ -517,11 +514,10 @@ export function OnboardingPage() {
               <button
                 type="button"
                 onClick={handleStartFromScratch}
-                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${
-                  importMode === 'scratch'
+                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${importMode === 'scratch'
                     ? 'border-primary bg-primary/5 text-foreground ring-1 ring-primary'
                     : 'border-border/60 hover:bg-muted/50 text-muted-foreground'
-                }`}
+                  }`}
               >
                 <PlusCircle className="h-5 w-5 text-primary mb-1" />
                 <span className="text-xs font-bold text-foreground">Start Fresh</span>
@@ -531,11 +527,10 @@ export function OnboardingPage() {
               <button
                 type="button"
                 onClick={handleUseSampleProfile}
-                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${
-                  importMode === 'sample'
+                className={`flex flex-col items-center justify-center p-3.5 rounded-xl border text-center transition-all ${importMode === 'sample'
                     ? 'border-primary bg-primary/5 text-foreground ring-1 ring-primary'
                     : 'border-border/60 hover:bg-muted/50 text-muted-foreground'
-                }`}
+                  }`}
               >
                 <Zap className="h-5 w-5 text-primary mb-1" />
                 <span className="text-xs font-bold text-foreground">Sample Demo Profile</span>
@@ -633,11 +628,10 @@ export function OnboardingPage() {
                   <div
                     key={tpl.id}
                     onClick={() => setSelectedTemplateId(tpl.id)}
-                    className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${
-                      isSelected
+                    className={`cursor-pointer rounded-xl border-2 p-4 transition-all flex flex-col justify-between ${isSelected
                         ? 'border-primary bg-primary/5 shadow-sm'
                         : 'border-border/60 hover:border-border hover:bg-muted/30'
-                    }`}
+                      }`}
                   >
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
@@ -708,11 +702,10 @@ export function OnboardingPage() {
                     key={tone.id}
                     type="button"
                     onClick={() => setTonePreference(tone.id as typeof tonePreference)}
-                    className={`rounded-lg border p-3 text-left transition-all ${
-                      tonePreference === tone.id
+                    className={`rounded-lg border p-3 text-left transition-all ${tonePreference === tone.id
                         ? 'border-primary bg-primary/10 ring-1 ring-primary'
                         : 'border-border/60 hover:bg-muted/30 text-muted-foreground'
-                    }`}
+                      }`}
                   >
                     <span className="block text-xs font-bold text-foreground">{tone.label}</span>
                     <span className="text-[10px] text-muted-foreground mt-0.5 block leading-tight">{tone.desc}</span>
@@ -730,11 +723,10 @@ export function OnboardingPage() {
                 <button
                   type="button"
                   onClick={() => setBulletDensity('concise')}
-                  className={`rounded-lg border p-3 text-left transition-all ${
-                    bulletDensity === 'concise'
+                  className={`rounded-lg border p-3 text-left transition-all ${bulletDensity === 'concise'
                       ? 'border-primary bg-primary/10 ring-1 ring-primary'
                       : 'border-border/60 hover:bg-muted/30 text-muted-foreground'
-                  }`}
+                    }`}
                 >
                   <span className="block text-xs font-bold text-foreground">Concise (1-2 lines)</span>
                   <span className="text-[10px] text-muted-foreground mt-0.5 block">
@@ -745,11 +737,10 @@ export function OnboardingPage() {
                 <button
                   type="button"
                   onClick={() => setBulletDensity('detailed')}
-                  className={`rounded-lg border p-3 text-left transition-all ${
-                    bulletDensity === 'detailed'
+                  className={`rounded-lg border p-3 text-left transition-all ${bulletDensity === 'detailed'
                       ? 'border-primary bg-primary/10 ring-1 ring-primary'
                       : 'border-border/60 hover:bg-muted/30 text-muted-foreground'
-                  }`}
+                    }`}
                 >
                   <span className="block text-xs font-bold text-foreground">Detailed (2-3 lines)</span>
                   <span className="text-[10px] text-muted-foreground mt-0.5 block">
